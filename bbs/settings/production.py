@@ -3,8 +3,8 @@
 from bbs.settings.common import *
 
 """ *** Application Allowed Hosts *** """
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
-
+# ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
+ALLOWED_HOSTS = ["*"]
 """ *** Database Configuration *** """
 if env.str('DATABASE_URL', default=''):
     DATABASES = {

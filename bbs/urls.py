@@ -8,7 +8,7 @@ import debug_toolbar
 from . import views
 from django.conf.urls.i18n import i18n_patterns
 from  django.utils.translation import gettext_lazy as _
-
+from django.views.static import serve
 """ User Panel Views """
 from .views import (
     HomeView, create_husband
@@ -94,10 +94,10 @@ DASHBOARD_PANEL_URLS = [
 ]
 urlpatterns = [
     # For handling Static Files in Debug False Mode
-    # url(r'^media/(?P<path>.*)$', serve,
-    #     {'document_root': settings.MEDIA_ROOT}),
-    # url(r'^static/(?P<path>.*)$', serve,
-    #     {'document_root': settings.STATIC_ROOT}),
+     url(r'^media/(?P<path>.*)$', serve,
+         {'document_root': settings.MEDIA_ROOT}),
+     url(r'^static/(?P<path>.*)$', serve,
+         {'document_root': settings.STATIC_ROOT}),
     # Application URLS
     path(_('admin/'), admin.site.urls),
     path('accounts/', include('allauth.urls')),

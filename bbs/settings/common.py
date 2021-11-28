@@ -39,7 +39,7 @@ THIRD_PARTY_APPS = [
     'debug_toolbar',
     # Django Select 2
     'django_select2',
-    'channels',
+   # 'channels',
 ]
 
 LOCAL_APPS = [
@@ -76,7 +76,7 @@ CUSTOM_MIDDLEWARES = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
+    #'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -186,7 +186,8 @@ CACHES = {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/2",
         "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+             "PASSWORD": env.str('REDIS_PASSWORD', default=''),
+             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
 }
