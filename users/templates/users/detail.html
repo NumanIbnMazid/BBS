@@ -1,0 +1,136 @@
+{% extends 'dashboard/base.html' %}
+
+{% load static %}
+
+{% load custom_tags %}
+
+{% block head_title %}
+{% block page_short_title %}
+{% block breadcrumb %}
+{{ page_short_title }}
+{% endblock %}
+{% endblock %}
+{% endblock %}
+{% block page_title %}
+{{ page_title }}
+{% endblock %}
+
+
+{% block content %}
+
+{% if can_view == True %}
+
+{% autoescape off %}
+
+<div class="card">
+    <div class="card-header">
+        <h4 class="card-title text-center">
+            <span class="">{{ page_title|translate_to_jp }}</span>
+        </h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+
+            <div class="col-12">
+                <div class="table-responsive">
+                    <table id="list-datatable" class="display align-items-center table-flush" style="width:100%">
+                        <tr>
+                            <th>
+                                <div class="row m-3">
+                                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-xs-6 col-2 text-right">
+                                        <span class="text-dark font-bold">
+                                            {{ 'Title'|translate_to_jp }}
+                                        </span>
+                                    </div>
+                                    <div class="col-xl-10 col-lg-10 col-md-9 col-sm-8 col-xs-6 col-10">
+                                        <span class="text-dark font-bold ml-2">
+
+                                            {{ 'Value'|translate_to_jp }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                        {% for label, value, field_type in object.get_fields %}
+                        <tr>
+                            <td class="font-normal">
+                                <div class="row m-3">
+                                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-xs-6 col-2 text-right">
+                                        <span class="font-bold font-15">{{ label|to_title|translate_to_jp }}</span>
+                                    </div>
+                                    <div class="col-xl-10 col-lg-10 col-md-9 col-sm-8 col-xs-6 col-10">
+                                        <div class="ml-2">
+                                            {% if value == None %}
+                                            --
+                                            {% else %}
+
+                                            <!-- start file fields -->
+
+                                            {% if field_type in 'ImageField, FileField' %}
+
+                                            {% if not value.url == None and not value == None and value != "" %}
+
+                                            {% if value.url|get_file_type == "image" %}
+                                            <img class="img-thumbnail ez-view m-2" src="{{ value.url }}"
+                                                alt="{{ value }}" style="height:70px;width:70px;">
+                                            {% elif value.url|get_file_type == "pdf" %}
+                                            <img class="ez-view m-2" style="height:70px;width:70px"
+                                                src="{% static 'assets/images/icons/pdf.png' %}" href="{{ value.url }}"
+                                                alt="{{ object.title }}">
+                                            {% elif value.url|get_file_type == "document" %}
+                                            <iframe class="doc img-thumbnail m-2" height="300" width="700"
+                                                src="http://docs.google.com/gview?url={{request.scheme}}://{{ request.get_host }}{{ value.url }}&embedded=true">
+                                            </iframe>
+                                            {% else %}
+                                            <span>{{ value.url }}</span>
+                                            {% endif %}
+
+                                            {% else %}
+                                            ---
+                                            {% endif %}
+                                            <!-- end file fields -->
+
+                                            <!-- start text-fields -->
+                                            {% elif field_type in 'TextField' %}
+                                            {{ value|safe|linebreaks|translate_to_jp }}
+                                            {% else %}
+                                            <!-- end text-fields -->
+
+                                            <!-- start fields -->
+                                            {{ value|translate_to_jp }}
+                                            <!-- end fields -->
+
+                                            {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endautoescape %}
+
+{% endif %}
+
+
+{% if not delete_url == None and can_delete == True %}
+{% include 'dashboard/snippets/delete-modal.html' %}
+{% endif %}
+
+{% endblock %}
+
+{% block additional_js %}
+<!-- EZ View JS -->
+<script src="{% static 'assets/vendors/ez-view/EZView.js' %}"></script>
+<script src="{% static 'assets/vendors/ez-view/draggable.js' %}"></script>
+<script src="{% static 'assets/vendors/ez-view/ez-conf.js' %}"></script>
+
+{% endblock %}

@@ -127,6 +127,16 @@ class User(AbstractBaseUser, PermissionsMixin):
         elif self.gender == 1:
             return "Female"
         return "Others"
+    
+    def get_fields(self):
+        def get_dynamic_fields(field):
+            if field.name == 'gender':
+                return (field.name, self.get_gender(), field.get_internal_type())
+            elif field.name == 'membership_type':
+                return (field.name, self.get_membership_type(), field.get_internal_type())
+            else:
+                return (field.name, field.value_from_object(self), field.get_internal_type())
+        return [get_dynamic_fields(field) for field in self.__class__._meta.fields]
 
 
 @receiver(pre_save, sender=User)
@@ -164,6 +174,14 @@ class UserWallet(models.Model):
 
     def __str__(self):
         return self.user.get_dynamic_username()
+    
+    def get_fields(self):
+        def get_dynamic_fields(field):
+            if field.name == 'user':
+                return (field.name, self.get_dynamic_username(), field.get_internal_type())
+            else:
+                return (field.name, field.value_from_object(self), field.get_internal_type())
+        return [get_dynamic_fields(field) for field in self.__class__._meta.fields]
 
 
 @receiver(post_save, sender=User)
@@ -218,7 +236,12 @@ class Husband(models.Model):
         return self.name
 
     def get_fields(self):
-        return [get_dynamic_fields(field, self) for field in self.__class__._meta.fields]
+        def get_dynamic_fields(field):
+            if field.name == 'user':
+                return (field.name, self.get_dynamic_username(), field.get_internal_type())
+            else:
+                return (field.name, field.value_from_object(self), field.get_internal_type())
+        return [get_dynamic_fields(field) for field in self.__class__._meta.fields]
 
 
 class UserCostTransaction(models.Model):
@@ -240,4 +263,9 @@ class UserCostTransaction(models.Model):
         return self.get_dynamic_username()
 
     def get_fields(self):
-        return [get_dynamic_fields(field, self) for field in self.__class__._meta.fields]
+        def get_dynamic_fields(field):
+            if field.name == 'user':
+                return (field.name, self.get_dynamic_username(), field.get_internal_type())
+            else:
+                return (field.name, field.value_from_object(self), field.get_internal_type())
+        return [get_dynamic_fields(field) for field in self.__class__._meta.fields]

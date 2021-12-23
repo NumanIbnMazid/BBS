@@ -12,7 +12,7 @@ from bbs.utils import autoslugFromUUID, translate_to_jp
 
 """ 
 -------------------------------------------------------------------
-                            ** PointPlan ***
+                        ** PointPlan ***
 -------------------------------------------------------------------
 """
 
@@ -139,16 +139,28 @@ class FlatRatePlan(models.Model):
         return [get_dynamic_fields(field) for field in self.__class__._meta.fields]
 
     def get_currency_icon_class(self):
+        """
+        get currency icon class based on currency
+        return => str
+        """
         if self.currency == 1:
             return "<i class='fas fa-dollar-sign'></i>"
         return "<i class='fas fa-yen-sign'></i>"
 
     def get_currency_str(self):
+        """
+        get string representaion of currency
+        return => str
+        """
         if self.currency == 1:
-            return 'USD'
-        return 'YEN'
+            return 'Dollar'
+        return 'Yen'
 
     def get_expiration_cycle_str(self):
+        """
+        get string representation of expiration cycle
+        return => str
+        """
         if self.expiration_cycle == 1:
             return "Yearly"
         elif self.expiration_cycle == 2:
@@ -156,6 +168,10 @@ class FlatRatePlan(models.Model):
         return "Monthly"
 
     def get_is_expired(self):
+        """
+        get if flat rate plan has already expired or not
+        return => bool
+        """
         is_expired = True
         current_datetime = timezone.now()
         timedelta_days = (current_datetime - self.created_at).days
@@ -212,6 +228,10 @@ class UserWalletTransaction(models.Model):
         return self.user.get_dynamic_username()
 
     def get_transaction_type_str(self):
+        """
+        get string representation of transaction type
+        return => str
+        """
         if self.transaction_type == 1:
             return "Flat Rate"
         return "Point"
