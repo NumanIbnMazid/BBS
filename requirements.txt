@@ -14,6 +14,7 @@ chardet==3.0.4
 charset-normalizer==2.0.4
 click==8.0.3
 constantly==15.1.0
+crispy-tailwind==0.5.0
 cryptography==3.4.8
 daphne==3.0.2
 deep-translator==1.5.4
@@ -22,11 +23,11 @@ Django==3.2.6
 django-allauth==0.45.0
 django-appconf==1.0.4
 django-ckeditor==6.1.0
+django-crispy-forms==1.13.0
 django-debug-toolbar==3.2.2
 django-environ==0.5.0
 django-js-asset==1.2.2
 django-redis==5.0.0
-django-rosetta==0.9.7
 django-select2==7.7.1
 django-widget-tweaks==1.4.8
 h11==0.9.0
@@ -44,7 +45,6 @@ libretranslatepy==2.1.1
 lxml==4.6.4
 msgpack==1.0.2
 oauthlib==3.1.1
-polib==1.1.1
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pycodestyle==2.7.0

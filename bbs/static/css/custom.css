@@ -1,0 +1,39 @@
+ 
+/* ************************** Custom CSS File ************************** */
+
+/* Remove Button outline on focus or active */
+
+.no-outline:focus,
+.no-outline.focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+
+/* Remove Padding from JQuery Modal */
+
+.modal {
+    padding: 0px !important;
+}
+
+/* Custom Modal Sizing */
+
+.modal-md {
+    max-width: 666px !important;
+}
+
+.modal-lg {
+    max-width: 786px !important;
+}
+
+.modal-xl {
+    max-width: 992px !important;
+}
+
+.modal-full {
+    max-width: 100% !important;
+}
+
+.cursor-pointer {
+    cursor: pointer !important;
+}

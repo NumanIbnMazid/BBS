@@ -32,6 +32,9 @@ THIRD_PARTY_APPS = [
     'allauth.account',
     # Widget Tweaks
     'widget_tweaks',
+    # Django Crispy Form
+    'crispy_forms',
+    'crispy_tailwind',
     # Django Ck Editor
     'ckeditor',
     'ckeditor_uploader',
@@ -190,6 +193,9 @@ CACHES = {
         }
     }
 }
+
+# Crispy Form Configuraton
+CRISPY_FAIL_SILENTLY = not DEBUG
 
 # Tell select2 which cache configuration to use:
 SELECT2_CACHE_BACKEND = "select2"

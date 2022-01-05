@@ -1,0 +1,43 @@
+{% url 'account_signup' as signup_url %}
+{% url 'account_login' as login_url %}
+{% url 'account_logout' as logout_url %}
+{% url 'account_email' as account_url %}
+{% url 'account_change_password' as change_password_url %}
+
+<nav
+    class="navbar navbar-expand-lg navbar-light bg-white position-fixed w-100 border-bottom border-light shadow-sm py-3">
+    <div class="container-fluid">
+        <!-- <a class="navbar-brand" href="#">Navbar</a> -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav w-100">
+                <li class="nav-item w-100 text-center d-flex justify-content-center">
+                    <a class="nav-link active w-25" aria-current="page" href="{% url 'home' %}">Home</a>
+                </li>
+                {% if request.user.is_authenticated %}
+                <li class="nav-item w-100 text-center d-flex justify-content-center">
+                    <a class="nav-link w-75" href="#">{{ request.user.get_dynamic_username }}</a>
+                </li>
+                {% else %}
+                <li class="nav-item w-100 text-center d-flex justify-content-center">
+                    <a class="nav-link w-75" href="{{ login_url }}">User Information Registration/Login</a>
+                </li>
+                {% endif %}
+                <li class="nav-item w-100 text-center d-flex justify-content-center">
+                    <a class="nav-link w-50" href="#">Inquiry</a>
+                </li>
+                <li class="nav-item w-100 text-center d-flex justify-content-center">
+                    <a class="nav-link w-25" href="#">Notice</a>
+                </li>
+                {% if request.user.is_authenticated %}
+                <li class="nav-item w-100 text-center d-flex justify-content-center">
+                    <a class="nav-link w-25 cursor-pointer" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

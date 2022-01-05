@@ -1,24 +1,62 @@
 {% extends "account/base.html" %}
 
 {% load i18n %}
+{% load crispy_forms_tags %}
 
-{% block head_title %}{% trans "Sign In" %}{% endblock %}
+{% block head_title %}{% trans "Login" %}{% endblock %}
+
 
 {% block content %}
 
-<h1>{% trans "Sign In" %}</h1>
+<div class="text-center mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">
+    <h1>{% trans "Login" %}</h1>
+</div>
 
-<p>{% blocktrans %}If you have not created an account yet, then please
-<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
+<form class="login" method="POST" action="{% url 'account_login' %}" autocomplete="off">
+    {% csrf_token %}
 
-<form class="login" method="POST" action="{% url 'account_login' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-  <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
+    {{ form|crispy }}
+
+    <div class="mb-6">
+        <div class="flex items-center justify-between">
+            <div>
+                <label class="inline-flex items-center cursor-pointer">
+                    <input type="checkbox" name="remember" id="remember_me"
+                        class="form-tick appearance-none h-4 w-4 border border-gray-300 rounded checked:bg-blue-600 checked:border-transparent focus:outline-none">
+                    <span class="text-sm font-normal text-color-2 pl-2">
+                        {% trans 'remember me' %}
+                    </span>
+                </label>
+            </div>
+            <div>
+                <a class="font-bold text-sm text-orange-600 hover:text-orange-800"
+                    href="{% url 'account_reset_password' %}">
+                    {% trans "forgot Password?" %}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {% if redirect_field_value %}
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
+
+    <button
+        class="block w-full btn-purple"
+        type="submit">
+        {% trans "Login" %}
+    </button>
 </form>
+
+<hr class="my-8" />
+
+<p class="mt-4">
+    <p class="text-sm">
+        {% blocktrans %}
+        Don't have an account yet? Please
+        <a href="{{ signup_url }}" class="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"><span class="font-bold text-lg">create account</span></a>.
+        {% endblocktrans %}
+    </p>
+</p>
 
 {% endblock %}

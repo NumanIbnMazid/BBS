@@ -1,5 +1,49 @@
-{% load static %}
-{% load custom_tags %}
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BBS</title>
+    {% include "user-panel/components/styles.html" %}
+    {% block additional_styles %}{% endblock %}
+</head>
 
-{% include 'user-panel/header.html' %}
+<body>
+    <!-- Messages Section -->
+    {% include "snippets/messages.html" %}
+
+    {% include "user-panel/components/navbar.html" %}
+
+    <!-- ======= Banner Section ======= -->
+    {% if show_baner %}
+    {% include "user-panel/components/banner.html" %}
+    {% endif %}
+    <!-- End Banner -->
+
+    <!-- content block -->
+    <main id="main">
+
+        <!-- main content block -->
+        {% block content %}{% endblock %}
+        <!-- end main content block -->
+
+    </main>
+    <!-- End #main -->
+
+    {% include "user-panel/components/footer.html" %}
+
+    <!-- Modals -->
+    <!-- Logout Modal -->
+    {% include "account/logout-modal-bootstrap5.html" %}
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center">
+        <i class="bi bi-arrow-up-short"></i>
+    </a>
+
+    {% include "user-panel/components/scripts.html" %}
+    {% block additional_scripts %}{% endblock %}
+</body>
+
+</html>
