@@ -38,6 +38,16 @@ class HomeView(TemplateView):
         context['post_lists'] =post_lists
         context['show_baner'] = True
         return context
+    
+class ThreadDetailTemplateView(TemplateView):
+    template_name = "user-panel/pages/thread.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(ThreadDetailTemplateView, self).get_context_data(**kwargs)
+        context["page_title"] = "Thread"
+        context['page_title'] = 'Thread'
+        context['show_baner'] = False
+        return context
 
 # #-----------------------------***-----------------------------
 # #-------------------- User Transaction Type ------------------
