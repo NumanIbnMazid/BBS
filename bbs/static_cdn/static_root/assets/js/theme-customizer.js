@@ -17,6 +17,28 @@ $(function ($) {
         })
     }
 
+    $(".translation-config").click(function () {
+        let value = $(this).is(":checked")
+        let settingObj = {
+            "setting-object": {
+                key: "translation-config",
+                value: value
+            }
+        }
+        AjaxCall(dataObj = JSON.stringify(settingObj))
+    });
+
+    $(".auto-translation-config").click(function () {
+        let value = $(this).is(":checked")
+        let settingObj = {
+            "setting-object": {
+                key: "auto-translation-config",
+                value: value
+            }
+        }
+        AjaxCall(dataObj = JSON.stringify(settingObj))
+    });
+
     $(".skin-config").click(function () {
         let value = $(this).val()
         let settingObj = {

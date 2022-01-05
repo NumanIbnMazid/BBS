@@ -756,8 +756,8 @@ body.dark-layout {
 
 .dark-layout .table thead.thead-dark th,
 .dark-layout .table tfoot.thead-dark th {
-  background-color: #fff;
-  color: #4b4b4b !important; }
+  background-color: #343d55;
+  color: #fff !important; }
 
 .dark-layout .table:not(.table-dark):not(.table-light) thead:not(.thead-dark) th,
 .dark-layout .table:not(.table-dark):not(.table-light) tfoot:not(.thead-dark) th {

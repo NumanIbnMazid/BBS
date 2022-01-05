@@ -13,6 +13,10 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'none'  # mandatory, optional, none
 ACCOUNT_USER_MODEL_EMAIL_FIELD = "email"
 ACCOUNT_USER_MODEL_USERNAME_FIELD = "username"
+ACCOUNT_FORMS = {
+    'login': 'users.forms.CustomLoginForm'
+}
+
 
 """
 ----------------------- * Django CK Editor Configuration * -----------------------
@@ -93,3 +97,16 @@ MAX_UPLOAD_SIZE = 2621440
 
 # File Validation Staffs
 ALLOWED_DOCUMENT_FILE_TYPES = ['.doc', '.docx', '.pdf']
+
+
+"""
+----------------------- * Django Crispy Forms Configurations * -----------------------
+"""
+
+# CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+CRISPY_TEMPLATE_PACK = "tailwind"
+CRISPY_CLASS_CONVERTERS = {
+    "textinput": "textinput focus:border-app-theme-400 dark:focus:border-app-theme dark:focus:border-app-theme focus:outline-none focus:shadow-outline-app-theme dark:focus:shadow-outline-app-theme-200 dark:text-gray-800 dark:focus:shadow-outline-app-theme form-input",
+    "passwordinput": "passwordinput focus:border-app-theme-400 dark:focus:border-app-theme dark:focus:border-app-theme focus:outline-none focus:shadow-outline-app-theme dark:focus:shadow-outline-app-theme-200 dark:text-gray-800 dark:focus:shadow-outline-app-theme form-input",
+}

@@ -61,6 +61,8 @@ DASHBOARD_PANEL_URLS = [
     path("dashboard/", DashboardView.as_view(), name="dashboard"),
     # ==============================*** UTILS URLS ***==============================
     path("utils/", include(("utils.urls", "utils"), namespace="utils")),
+    # ==============================*** User URLS ***==============================
+    path("users/", include(("users.urls", "users"), namespace="users")),
     # ==============================*** Thread URLS ***==============================
     path("create-thread/", ThreadCreateView.as_view(), name="create_thread"),
     path("update-thread/<slug>/", ThreadUpdateView.as_view(), name="update_thread"),

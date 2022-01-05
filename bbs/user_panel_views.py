@@ -27,7 +27,7 @@ from django.db.models import Q
 
 
 class HomeView(TemplateView):
-    template_name = "user-panel/index.html"
+    template_name = "user-panel/pages/index.html"
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
         thread_lists = Thread.objects.all()
@@ -36,6 +36,7 @@ class HomeView(TemplateView):
         context['page_title'] ='Thread lists'
         context['thread_lists'] =thread_lists
         context['post_lists'] =post_lists
+        context['show_baner'] = True
         return context
 
 # #-----------------------------***-----------------------------
