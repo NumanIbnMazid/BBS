@@ -17,6 +17,8 @@ from .views import (
 
 from .views import (
     DashboardView, 
+    # Thread Template Views
+    ThreadDetailTemplateView,
     # Thread Views
     ThreadCreateView, ThreadUpdateView, ThreadDetailView, delete_thread,
     # Point Plan Views
@@ -32,6 +34,8 @@ from .views import (
 
 USER_PANEL_URLS = [
     path("", HomeView.as_view(), name="home"),
+    path("thread/template/", ThreadDetailTemplateView.as_view(), name="thread_template"),
+    # -----------------------------*** Thread Detail ***-----------------------------
     # -----------------------------*** User ***-----------------------------
     #   -----------------------------*** *** ***-----------------------------
     path('user-profile/', views.user_profile, name="user_profile"),
