@@ -1,6 +1,7 @@
 from django import template
 from utils.models import DashboardSetting, BBStranslation
 from deep_translator import GoogleTranslator
+from posts.models import Thread
 
 
 register = template.Library()
@@ -17,6 +18,11 @@ def get_dashboard_setting():
         dashboard_setting_instance = dashboard_setting_qs.last()
         return dashboard_setting_instance
     return None
+
+
+@register.simple_tag(name='get_thread_list')
+def get_thread_list():
+    return Thread.objects.all()
 
 
 @register.filter

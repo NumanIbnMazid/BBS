@@ -2,7 +2,8 @@ from django.db import models
 from bbs.helpers import get_dynamic_fields
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from bbs.utils import autoslugFromUUID, translate_to_jp
+from bbs.utils import autoslugFromUUID
+from posts.image_upload_helper import upload_thread_image, upload_post_image
 
 
 """ 
@@ -18,6 +19,7 @@ class Thread(models.Model):
         max_length=254, unique=True
     )
     slug = models.SlugField(unique=True, max_length=254)
+    image = models.ImageField(upload_to=upload_thread_image, blank=True, null=True)
     weight = models.PositiveIntegerField(
         default=0, blank=True, null=True, verbose_name="thread weight"
     )
@@ -66,6 +68,7 @@ class Post(models.Model):
     description = models.TextField(
         blank=True, null=True
     )
+    image = models.ImageField(upload_to=upload_post_image, blank=True, null=True)
     allowed_users = models.ManyToManyField(
         get_user_model(), related_name='allowed_users', blank=True
     )
@@ -96,6 +99,20 @@ class Post(models.Model):
                 return (field.name, field.value_from_object(self), field.get_internal_type())
 
         return [get_dynamic_fields(field) for field in self.__class__._meta.fields]
+    
+    def is_premium(self):
+        if self.weight >= 1:
+            return True
+        elif self.thread.weight >= 1:
+            return True
+        return False
+    
+    def get_point_required(self):
+        if self.weight >= 1:
+            return self.weight
+        elif self.thread.weight >= 1:
+            return self.thread.weight
+        return 0
 
 
 # # -------------------------------------------------------------------

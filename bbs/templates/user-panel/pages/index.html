@@ -1,5 +1,7 @@
 {% extends "user-panel/base.html" %}
 
+{% load static %}
+
 {% block content %}
 
 
@@ -17,42 +19,20 @@
 <div class="section-3 py-4 pe-4 ps-5 ms-0 row w-100">
     <div class="col-md-9">
         <div class="row">
-            <div class="col-md-4">
-                <a href="{% url 'thread_template' %}" class="text-decoration-none">
-                    <img src="/static/user-panel/image/img-1.png" alt="image" class="img-fluid">
-                    <p class="py-1 ps-5">Green Card</p>
+            {% for thread in thread_list %}
+            <div class="col-md-4 text-center">
+                <a href="{% url 'thread_post_list' slug=thread.slug %}" class="text-decoration-none">
+                    <img 
+                    src="{% if thread.image %}{{ thread.image.url }}{% else %}{% static 'assets/images/no-image.png' %}{% endif %}"
+                        alt="{{ thread.title }}" class="img-fluid thread-image-list">
+                    <p>{{ thread.title }}</p>
                 </a>
             </div>
-            <div class="col-md-4">
-                <a href="{% url 'thread_template' %}" class="text-decoration-none">
-                    <img src="/static/user-panel/image/img-2.png" alt="image" class="img-fluid">
-                    <p class="py-1 ps-5 ms-4">Prenuptial Agreement</p>
-                </a>
+            {% empty %}
+            <div class="alert alert-info text-center" role="alert">
+                No thread found!
             </div>
-            <div class="col-md-4">
-                <a href="{% url 'thread_template' %}" class="text-decoration-none">
-                    <img src="/static/user-panel/image/img-3.png" alt="image" class="img-fluid">
-                    <p class="py-1 ps-5">Education for Children</p>
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a href="{% url 'thread_template' %}" class="text-decoration-none">
-                    <img src="/static/user-panel/image/img-4.png" alt="image" class="img-fluid">
-                    <p class="py-1 ps-5">Preparation for Divorce</p>
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a href="{% url 'thread_template' %}" class="text-decoration-none">
-                    <img src="/static/user-panel/image/img-5.png" alt="image" class="img-fluid">
-                    <p class="py-1 ps-2">Complain in their marriage</p>
-                </a>
-            </div>
-            <div class="col-md-4">
-                <a href="{% url 'thread_template' %}" class="text-decoration-none">
-                    <img src="/static/user-panel/image/img-6.png" alt="image" class="img-fluid">
-                    <p class="py-1 ps-5 ms-5">Others</p>
-                </a>
-            </div>
+            {% endfor %}
         </div>
     </div>
     <div class="col-md-3">
