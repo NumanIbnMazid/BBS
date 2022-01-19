@@ -1,0 +1,25 @@
+{% load custom_tags %}
+{% load static %}
+
+{% get_thread_list as thread_list %}
+
+<div class="col-md-3 ">
+    <div class="row ps-3 py-2 border-bottom my-4 mx-1 w-100 color-a0a0a0">Threads</div>
+    <nav class="nav flex-column ms-0">
+        {% for thread in thread_list %}
+        <a class="nav-link my-2 {% if active_thread.title == thread.title %}active{% endif %}" aria-current="page"
+            href="{% url 'thread_post_list' slug=thread.slug %}">
+            <!-- <i class="far fa-address-card pe-3"></i> -->
+            <img src="{% if thread.image %}{{ thread.image.url }}{% else %}{% static 'assets/images/no-image.png' %}{% endif %}"
+                alt="{{ thread.title }}" class="img-fluid thread-image-sidebar">
+            {{ thread.title }}
+        </a>
+        {% empty %}
+        <a class="nav-link my-2" aria-current="page" href="#">
+            <div class="alert alert-info text-center" role="alert">
+                No Thread found!
+            </div>
+        </a>
+        {% endfor %}
+    </nav>
+</div>

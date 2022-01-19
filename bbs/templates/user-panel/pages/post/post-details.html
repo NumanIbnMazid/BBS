@@ -1,0 +1,137 @@
+{% extends "user-panel/base-second.html" %}
+
+{% load custom_tags %}
+
+{% block content_second %}
+
+<!-- post details -->
+
+
+<div class="card border-top-0 border-rounded shadow-sm mt-4">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-2 text-center">
+                <img src="/static/user-panel/image/human-2.png" alt="">
+            </div>
+            <div class="col-md-8 my-auto">
+                <h4 class="color-fe80c4 mb-0">{{ post.user.get_dynamic_username|truncatechars:17 }}</h4>
+                <small class="color-959eae">{{ post.created_at }}</small>
+            </div>
+            {% if post.is_premium %}
+            <div class="col-md-2 text-end text-warning fs-3">
+                <i class="fas fa-star"></i>
+            </div>
+            {% endif %}
+        </div>
+        <div class="row mt-4 px-3">
+            <p class="color-7b7b7b">
+                {{ post.description|safe|linebreaks }}
+            </p>
+        </div>
+        <form method="POST" action="{% url 'post_details' slug=post.slug %}" enctype="multipart/form-data"
+            class="row py-2">
+            <div class="col-md-2 text-center">
+                <img src="/static/user-panel/image/human-1.png" alt="">
+            </div>
+            {% csrf_token %}
+            <div class="col-md-7 my-auto">
+                <input type="text" name="comment" class="form-control form-thread" placeholder="Write a comment ....">
+            </div>
+            <div class="col-md-3 text-center my-auto">
+                <button type="submit" class="btn btn-info btn-post text-white">comment</button>
+            </div>
+        </form>
+
+        <!-- comment section -->
+        <div class="container mt-4">
+            <div class="row">
+                {% for comment in post_qs.post_comments.all %}
+                <div class="row">
+                    <div class="col-1">
+                        <img src="/static/user-panel/image/human-1.png" class="media-object" style="width:40px">
+                    </div>
+                    <div class="col-11">
+                        <h6 class="fw-bold">{{ comment.commented_by.get_dynamic_username|truncatechars:17 }}</h6>
+                        <p class="komen">
+                            {{ comment.comment }}
+                            <br>
+                            <a data-bs-toggle="collapse" href="#comment-{{ comment.id }}" role="button"
+                                aria-expanded="false" aria-controls="collapseExample">
+                                Reply
+                            </a>
+                            <div class="collapse" id="comment-{{ comment.id }}">
+                                <form method="POST" action="{% url 'comment_reply' id=comment.id %}"
+                                    enctype="multipart/form-data" class="row py-2">
+                                    {% csrf_token %}
+                                    <div class="col-md-2 text-center">
+                                        <img src="/static/user-panel/image/human-1.png" alt="">
+                                    </div>
+                                    <div class="col-md-7 my-auto">
+                                        <input type="text" name="reply" class="form-control form-thread"
+                                            placeholder="Write a comment ....">
+                                    </div>
+                                    <div class="col-md-3 text-center my-auto">
+                                        <button type="submit" class="btn btn-info btn-post text-white">Reply</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </p>
+                    </div>
+                </div>
+
+                {% for reply in comment.comment_replies.all %}
+                <div class="reply ms-5">
+                    <div class="row">
+                        <div class="col-1">
+                            <img src="/static/user-panel/image/human-1.png" class="media-object" style="width:40px">
+                        </div>
+                        <div class="col-11">
+                            <h6 class="fw-bold">{{ reply.replied_by.get_dynamic_username|truncatechars:17 }}</h6>
+                            <p class="komen">
+                                {{ reply.reply }}
+                                <br>
+                                <a data-bs-toggle="collapse" href="#reply-{{ reply.id }}" role="button"
+                                    aria-expanded="false" aria-controls="collapseExample">
+                                    Reply
+                                </a>
+                                <div class="collapse" id="reply-{{ reply.id }}">
+                                    <form method="POST" action="{% url 'comment_reply' id=comment.id %}"
+                                        enctype="multipart/form-data" class="row py-2">
+                                        {% csrf_token %}
+                                        <div class="col-md-2 text-center">
+                                            <img src="/static/user-panel/image/human-1.png" alt="">
+                                        </div>
+                                        <div class="col-md-7 my-auto">
+                                            <input type="text" name="reply" class="form-control form-thread"
+                                                placeholder="Write a comment ....">
+                                        </div>
+                                        <div class="col-md-3 text-center my-auto">
+                                            <button type="submit" class="btn btn-info btn-post text-white">Reply</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block additional_scripts %}
+
+<script>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>
+
+{% endblock %}

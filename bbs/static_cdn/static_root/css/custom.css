@@ -33,3 +33,17 @@
 .modal-full {
     max-width: 100% !important;
 }
+
+.cursor-pointer {
+    cursor: pointer !important;
+}
+
+/* custom button */
+
+.astext {
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}

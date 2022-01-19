@@ -1,0 +1,14 @@
+{% extends "user-panel/base.html" %}
+
+{% block content %}
+<div class="container thread">
+    <div class="row w-100">
+        {% include "user-panel/pages/components/thread-leftbar.html" %}
+        <div class="col-md-6 border border-top-0 px-4 py-5 bg-f9fafb overflow-auto">
+            {% block content_second %}{% endblock %}
+        </div>
+        {% include "user-panel/pages/components/thread-rightbar.html" %}
+    </div>
+</div>
+
+{% endblock %}

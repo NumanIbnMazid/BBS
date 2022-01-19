@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView, View
 # models import
 from plans.models import UserWalletTransaction
 from users.models import Husband, UserWallet, User
@@ -20,6 +20,29 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 
 from django.db.models import Q
+import os
+from django.conf import settings
+from django.core.files.uploadedfile import UploadedFile
+from django.db.models.fields.files import ImageFieldFile
+from django.template.defaultfilters import filesizeformat
+
+# helper functions
+
+
+def check_is_valid_image(imageFile):
+    image = imageFile
+    if image and isinstance(image, UploadedFile):
+        file_extension = os.path.splitext(image.name)[1]
+        allowed_image_types = settings.ALLOWED_IMAGE_TYPES
+        content_type = image.content_type.split('/')[0]
+        if not file_extension in allowed_image_types:
+            return False, "Only %s image file formats are supported! Current image file format is %s" % (
+                allowed_image_types, file_extension)
+        if image.size > settings.MAX_UPLOAD_SIZE:
+            return False, "Please keep filesize under %s. Current filesize %s" % (
+                filesizeformat(settings.MAX_UPLOAD_SIZE), filesizeformat(image.size))
+    return True, "is_valid_image"
+
 
 # #-----------------------------***-----------------------------
 # #---------------------------- Home ---------------------------
@@ -30,22 +53,35 @@ class HomeView(TemplateView):
     template_name = "user-panel/pages/index.html"
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
-        thread_lists = Thread.objects.all()
-        post_lists = Post.objects.all().distinct()
+        thread_list = Thread.objects.all()
+        post_list = Post.objects.all().distinct()
         context["page_title"] = "Home"
         context['page_title'] ='Thread lists'
-        context['thread_lists'] =thread_lists
-        context['post_lists'] =post_lists
+        context['thread_list'] =thread_list
+        context['post_list'] =post_list
         context['show_baner'] = True
         return context
     
-class ThreadDetailTemplateView(TemplateView):
+class ThreadPostListView(ListView):
     template_name = "user-panel/pages/thread.html"
+    
+    def get_thread(self):
+        qs = Thread.objects.filter(slug__iexact=self.kwargs['slug'])
+        if qs.exists():
+            return qs.first()
+        return None
+    
+    def get_queryset(self):
+        qs = Post.objects.all()
+        if self.kwargs.get('slug'):
+            qs = qs.filter(thread__slug__iexact=self.kwargs['slug'])
+        return qs
 
     def get_context_data(self, **kwargs):
-        context = super(ThreadDetailTemplateView, self).get_context_data(**kwargs)
-        context["page_title"] = "Thread"
-        context['page_title'] = 'Thread'
+        context = super(ThreadPostListView, self).get_context_data(**kwargs)
+        context["page_title"] = "Thread Posts"
+        context['page_title'] = 'Thread Posts'
+        context['active_thread'] = self.get_thread() if self.get_thread else None
         context['show_baner'] = False
         return context
 
@@ -171,7 +207,7 @@ def user_profile(request):
                'user_wallet':user_wallet,
                'user_wallet_transaction':user_wallet_transaction,
                'total_post_read':total_post_read}
-    return render(request,'user-panel/profile.html', context)
+    return render(request,'user-panel/backup/profile.html', context)
 
 # #-----------------------------***-----------------------------
 # #------------------------ Profile Update-----------------------
@@ -246,20 +282,32 @@ def husband_update(request, slug):
 # #----------------------------------------****----------------------------------------
 # #--------------------------------------- Post ---------------------------------------
 # #----------------------------------------****----------------------------------------
+
 @login_required()
 def create_post(request):
-    form = PostManageForm
+    # form = PostManageForm
     if request.method == 'POST':
         user_qs = request.user
+        
+        # get form data
         title = request.POST.get('title')
+        thread_slug = request.POST.get('thread-slug')
+        description = request.POST.get('description')
+        image = request.FILES.get('image')
+        
         post_title_qs = Post.objects.filter(title__iexact = title)
         if post_title_qs:
             messages.error(request, 'Post Title is Already Exists')
-            return HttpResponseRedirect(reverse("create_post"))
-        thread = request.POST.get('thread')
-        description = request.POST.get('description')
+            return HttpResponseRedirect(reverse("thread_post_list", kwargs={'slug': thread_slug}))
+        
+        # check if image is valid
+        if image:
+            is_valid_image = check_is_valid_image(image)
+            if is_valid_image[0] == False:
+                messages.add_message(request, messages.ERROR, is_valid_image[1])
+                return HttpResponseRedirect(reverse("thread_post_list" , kwargs={'slug':thread_slug}))
 
-        thread_qs = Thread.objects.filter(id=int(request.POST.get('thread')))
+        thread_qs = Thread.objects.filter(slug__iexact=thread_slug)
 
         if thread_qs.exists():
             thread_obj = thread_qs.first()
@@ -292,17 +340,17 @@ def create_post(request):
                         user_wallet_qs.update(available_points=(available_points - thread_weight))
                         # create post
                         post_qs = Post.objects.create(user=user_qs, title=title, thread=thread_obj,
-                                                      description=description)
+                                                      description=description, image=image)
                         post_qs.allowed_users.add(request.user)
                         messages.success(request, 'Post created successfully!')
-                        return HttpResponseRedirect(reverse('user_profile'))
+                        return HttpResponseRedirect(reverse("thread_post_list", kwargs={'slug': thread_slug}))
                     else:
                         has_available_points = False
 
                 # if has valid flat rate transaction
                 else:
                     post_qs = Post.objects.create(user=user_qs, title=title, thread=thread_obj,
-                                                  description=description)
+                                                  description=description, image=image)
                     post_qs.allowed_users.add(request.user)
                     messages.success(request, 'Successfully Post Added')
                     return HttpResponseRedirect(reverse('user_profile'))
@@ -310,22 +358,23 @@ def create_post(request):
                 if not has_valid_flat_rate_transaction and not has_available_points:
                     messages.error(request, f'Please purchase points or flat rate plan to create post '
                                             f'under this thread. This thread requires at least {thread_weight} points.')
-                    return redirect('user_profile')
+                    return HttpResponseRedirect(reverse("thread_post_list", kwargs={'slug': thread_slug}))
 
             # if there is no weight of thread
             else:
                 post_qs = Post.objects.create(user=user_qs, title=title, thread=thread_obj,
-                                              description=description)
+                                              description=description, image=image)
                 post_qs.allowed_users.add(request.user)
                 messages.success(request, 'Successfully Post Added')
-                return HttpResponseRedirect(reverse('user_profile'))
+                return HttpResponseRedirect(reverse("thread_post_list", kwargs={'slug': thread_slug}))
         else:
             messages.error(request, 'Thread not found!')
-            return redirect('user_profile')
+            return HttpResponseRedirect(reverse("thread_post_list", kwargs={'slug': thread_slug}))
 
         messages.error(request, 'Something went wrong!')
-    context = {'form': form}
-    return render(request, 'user-panel/form.html', context)
+    # context = {'form': form}
+    context = {}
+    return render(request, 'user-panel/pages/index.html', context)
 
 # #-----------------------------***-----------------------------
 # #------------------------ Post Details ------------------------
@@ -398,8 +447,9 @@ def post_details(request, slug):
                     if read_more or comment:
                         is_read_more = False
                         is_comment_show = False
-                        messages.error(request, f'Please purchase points or flat rate plan to create post under this'
-                                                f' thread. This thread requires at least {post_weight} points.')
+                        messages.error(request, f'Please purchase points or flat rate plan to view this post.'
+                                                f' This post requires at least {post_weight} points.')
+                        return HttpResponseRedirect(reverse("thread_post_list", kwargs={'slug': post_qs.thread.slug}))
                     # ..***.. If User Want to Read  Part of Post Or Comment End..***..
                 # ...***... Available Point is less than or not Post Weight Checking End ..***..
 
@@ -414,7 +464,7 @@ def post_details(request, slug):
                         Comment.objects.create(post=post_qs,
                                                commented_by=request.user,
                                                comment=comment)
-                        messages.success(request, 'Comment Add Successfully!')
+                        messages.success(request, 'Comment added successfully!')
             # ...***... Is Has Flat Rate is valid End ...***...
 
             # ..***.. Point Validation Checking  End ..***..
@@ -432,7 +482,7 @@ def post_details(request, slug):
                     Comment.objects.create(post=post_qs,
                                            commented_by=request.user,
                                            comment=comment)
-                    messages.success(request, 'Comment Add Successfully!')
+                    messages.success(request, 'Comment added successfully!')
                 # ...***... Comment Create End ...***..
     else:
         is_chat_show = True
@@ -443,7 +493,7 @@ def post_details(request, slug):
                 Comment.objects.create(post=post_qs,
                                        commented_by=request.user,
                                        comment=comment)
-                messages.success(request, 'Comment Add Successfully')
+                messages.success(request, 'Comment added successfully')
     # ..***.. Check Request User is Creator of This Post Or Not End ..***..
 
     # if not has_valid_flat_rate_transaction and not available_points:
@@ -462,7 +512,10 @@ def post_details(request, slug):
     user = request.user.id
     user_name = request.user
     receiver_id = post_qs.user.id
-    context = {'form': form, 'post_qs': post_qs,
+    context = {'form': form, 
+               'post': post_qs,
+               'active_thread': post_qs.thread,
+               'post_qs': post_qs,
                'page_title': post_qs.title,
                'available_point': available_points,
                'post_weight': post_weight,
@@ -477,7 +530,7 @@ def post_details(request, slug):
                'room_name': slug,
                'user_name': user_name
                }
-    return render(request, 'user-panel/post-details.html', context)
+    return render(request, 'user-panel/pages/post/post-details.html', context)
 
 # #-----------------------------***-----------------------------
 # #------------------------ Post Update ------------------------
@@ -588,7 +641,7 @@ def comment_reply(request, id):
                                 CommentReply.objects.create(comment=comment_object,
                                                             replied_by=request.user,
                                                             reply=reply)
-                                messages.success(request, ' Reply Add Successfully')
+                                messages.success(request, ' Reply added successfully')
                                 # ..***.. Reply Create End ..***..
 
                         # ...***... Available Point is less than or not Post Weight Checking End ..***..
@@ -620,7 +673,7 @@ def comment_reply(request, id):
                         CommentReply.objects.create(comment=comment_object,
                                                     replied_by=request.user,
                                                     reply=reply)
-                        messages.success(request, 'Reply Add Successfully')
+                        messages.success(request, 'Reply added successfully')
                 # ..***.. Post Weight is 0 Reply & Comment Add End ..***..
 
             # ...***... For Add Comment Reply When The Post User \
@@ -636,13 +689,13 @@ def comment_reply(request, id):
                     CommentReply.objects.create(comment=comment_object,
                                                 replied_by=request.user,
                                                 reply=reply)
-                    messages.success(request, 'Reply Add Successfully')
+                    messages.success(request, 'Reply added successfully')
                 if comment:
                     is_comment_show = True
                     Comment.objects.create(post=post_qs,
                                            commented_by=request.user,
                                            comment=comment)
-                    messages.success(request, 'Comment Add Successfully!')
+                    messages.success(request, 'Comment added successfully!')
 
             # ...***... For Add Comment Reply When The Post is Already User \
             #  Read or Add Comment Before End...***...
@@ -650,11 +703,13 @@ def comment_reply(request, id):
             # messages.error(request, 'Can Not Found')
             return redirect('user_profile')
     context = {'post_qs':post_qs,
+               'post': post_qs,
+               'active_thread': post_qs.thread,
                'page_title':page_title,
                'post_weight':post_weight,
                'is_comment_show':is_comment_show,
                'is_read_more':is_read_more}
-    return render(request, 'user-panel/post-details.html', context)
+    return render(request, 'user-panel/pages/post/post-details.html', context)
 
 # #-----------------------------***-----------------------------
 # #------------------------ All Post List ----------------------
