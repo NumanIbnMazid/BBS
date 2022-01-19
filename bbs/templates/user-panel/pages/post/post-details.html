@@ -28,20 +28,98 @@
                 {{ post.description|safe|linebreaks }}
             </p>
         </div>
-        <div class="row mt-2 mx-1 comment-row py-2 text-center">
-            <a href="#">Show Comments</a>
-        </div>
-        <div class="row py-2">
+        <form method="POST" action="{% url 'post_details' slug=post.slug %}" enctype="multipart/form-data"
+            class="row py-2">
             <div class="col-md-2 text-center">
                 <img src="/static/user-panel/image/human-1.png" alt="">
             </div>
+            {% csrf_token %}
             <div class="col-md-7 my-auto">
-                <input type="text" class="form-control form-thread" placeholder="Write a comment ....">
+                <input type="text" name="comment" class="form-control form-thread" placeholder="Write a comment ....">
             </div>
             <div class="col-md-3 text-center my-auto">
-                <button class="btn btn-info btn-post text-white">comment</button>
+                <button type="submit" class="btn btn-info btn-post text-white">comment</button>
+            </div>
+        </form>
+
+        <!-- comment section -->
+        <div class="container mt-4">
+            <div class="row">
+                {% for comment in post_qs.post_comments.all %}
+                <div class="row">
+                    <div class="col-1">
+                        <img src="/static/user-panel/image/human-1.png" class="media-object" style="width:40px">
+                    </div>
+                    <div class="col-11">
+                        <h6 class="fw-bold">{{ comment.commented_by.get_dynamic_username|truncatechars:17 }}</h6>
+                        <p class="komen">
+                            {{ comment.comment }}
+                            <br>
+                            <a data-bs-toggle="collapse" href="#comment-{{ comment.id }}" role="button"
+                                aria-expanded="false" aria-controls="collapseExample">
+                                Reply
+                            </a>
+                            <div class="collapse" id="comment-{{ comment.id }}">
+                                <form method="POST" action="{% url 'comment_reply' id=comment.id %}"
+                                    enctype="multipart/form-data" class="row py-2">
+                                    {% csrf_token %}
+                                    <div class="col-md-2 text-center">
+                                        <img src="/static/user-panel/image/human-1.png" alt="">
+                                    </div>
+                                    <div class="col-md-7 my-auto">
+                                        <input type="text" name="reply" class="form-control form-thread"
+                                            placeholder="Write a comment ....">
+                                    </div>
+                                    <div class="col-md-3 text-center my-auto">
+                                        <button type="submit" class="btn btn-info btn-post text-white">Reply</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </p>
+                    </div>
+                </div>
+
+                {% for reply in comment.comment_replies.all %}
+                <div class="reply ms-5">
+                    <div class="row">
+                        <div class="col-1">
+                            <img src="/static/user-panel/image/human-1.png" class="media-object" style="width:40px">
+                        </div>
+                        <div class="col-11">
+                            <h6 class="fw-bold">{{ reply.replied_by.get_dynamic_username|truncatechars:17 }}</h6>
+                            <p class="komen">
+                                {{ reply.reply }}
+                                <br>
+                                <a data-bs-toggle="collapse" href="#reply-{{ reply.id }}" role="button"
+                                    aria-expanded="false" aria-controls="collapseExample">
+                                    Reply
+                                </a>
+                                <div class="collapse" id="reply-{{ reply.id }}">
+                                    <form method="POST" action="{% url 'comment_reply' id=comment.id %}"
+                                        enctype="multipart/form-data" class="row py-2">
+                                        {% csrf_token %}
+                                        <div class="col-md-2 text-center">
+                                            <img src="/static/user-panel/image/human-1.png" alt="">
+                                        </div>
+                                        <div class="col-md-7 my-auto">
+                                            <input type="text" name="reply" class="form-control form-thread"
+                                                placeholder="Write a comment ....">
+                                        </div>
+                                        <div class="col-md-3 text-center my-auto">
+                                            <button type="submit" class="btn btn-info btn-post text-white">Reply</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                {% endfor %}
             </div>
         </div>
+
     </div>
 </div>
 

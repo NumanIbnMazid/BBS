@@ -86,19 +86,21 @@
             </p>
         </div>
         <div class="row mt-2 mx-1 comment-row py-2 text-center">
-            <a href="#">Show Comments</a>
+            <a href="{% url 'post_details' slug=post.slug %}">Show Comments</a>
         </div>
-        <div class="row py-2">
+        <form method="POST" action="{% url 'post_details' slug=post.slug %}" enctype="multipart/form-data"
+            class="row py-2">
             <div class="col-md-2 text-center">
                 <img src="/static/user-panel/image/human-1.png" alt="">
             </div>
+            {% csrf_token %}
             <div class="col-md-7 my-auto">
-                <input type="text" class="form-control form-thread" placeholder="Write a comment ....">
+                <input type="text" name="comment" class="form-control form-thread" placeholder="Write a comment ....">
             </div>
             <div class="col-md-3 text-center my-auto">
-                <button class="btn btn-info btn-post text-white">comment</button>
+                <button type="submit" class="btn btn-info btn-post text-white">comment</button>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 

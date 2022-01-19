@@ -464,7 +464,7 @@ def post_details(request, slug):
                         Comment.objects.create(post=post_qs,
                                                commented_by=request.user,
                                                comment=comment)
-                        messages.success(request, 'Comment Add Successfully!')
+                        messages.success(request, 'Comment added successfully!')
             # ...***... Is Has Flat Rate is valid End ...***...
 
             # ..***.. Point Validation Checking  End ..***..
@@ -482,7 +482,7 @@ def post_details(request, slug):
                     Comment.objects.create(post=post_qs,
                                            commented_by=request.user,
                                            comment=comment)
-                    messages.success(request, 'Comment Add Successfully!')
+                    messages.success(request, 'Comment added successfully!')
                 # ...***... Comment Create End ...***..
     else:
         is_chat_show = True
@@ -493,7 +493,7 @@ def post_details(request, slug):
                 Comment.objects.create(post=post_qs,
                                        commented_by=request.user,
                                        comment=comment)
-                messages.success(request, 'Comment Add Successfully')
+                messages.success(request, 'Comment added successfully')
     # ..***.. Check Request User is Creator of This Post Or Not End ..***..
 
     # if not has_valid_flat_rate_transaction and not available_points:
@@ -641,7 +641,7 @@ def comment_reply(request, id):
                                 CommentReply.objects.create(comment=comment_object,
                                                             replied_by=request.user,
                                                             reply=reply)
-                                messages.success(request, ' Reply Add Successfully')
+                                messages.success(request, ' Reply added successfully')
                                 # ..***.. Reply Create End ..***..
 
                         # ...***... Available Point is less than or not Post Weight Checking End ..***..
@@ -673,7 +673,7 @@ def comment_reply(request, id):
                         CommentReply.objects.create(comment=comment_object,
                                                     replied_by=request.user,
                                                     reply=reply)
-                        messages.success(request, 'Reply Add Successfully')
+                        messages.success(request, 'Reply added successfully')
                 # ..***.. Post Weight is 0 Reply & Comment Add End ..***..
 
             # ...***... For Add Comment Reply When The Post User \
@@ -689,13 +689,13 @@ def comment_reply(request, id):
                     CommentReply.objects.create(comment=comment_object,
                                                 replied_by=request.user,
                                                 reply=reply)
-                    messages.success(request, 'Reply Add Successfully')
+                    messages.success(request, 'Reply added successfully')
                 if comment:
                     is_comment_show = True
                     Comment.objects.create(post=post_qs,
                                            commented_by=request.user,
                                            comment=comment)
-                    messages.success(request, 'Comment Add Successfully!')
+                    messages.success(request, 'Comment added successfully!')
 
             # ...***... For Add Comment Reply When The Post is Already User \
             #  Read or Add Comment Before End...***...
@@ -703,11 +703,13 @@ def comment_reply(request, id):
             # messages.error(request, 'Can Not Found')
             return redirect('user_profile')
     context = {'post_qs':post_qs,
+               'post': post_qs,
+               'active_thread': post_qs.thread,
                'page_title':page_title,
                'post_weight':post_weight,
                'is_comment_show':is_comment_show,
                'is_read_more':is_read_more}
-    return render(request, 'user-panel/post-details.html', context)
+    return render(request, 'user-panel/pages/post/post-details.html', context)
 
 # #-----------------------------***-----------------------------
 # #------------------------ All Post List ----------------------
