@@ -54,7 +54,7 @@
 <!-- post list -->
 {% for post in post_list %}
 
-{% if request.user.is_authenticated %}
+{% if not post.is_premium %}
 
 <div class="card border-top-0 border-rounded shadow-sm mt-4">
     <div class="card-body">
