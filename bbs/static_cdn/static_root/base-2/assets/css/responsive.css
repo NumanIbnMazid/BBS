@@ -1,0 +1,238 @@
+/*================================ 
+    #RESPONSIVE CSS 
+====================================*/
+
+/* Large Device: 1200px. */
+	
+
+@media only screen and (min-width: 1400px) and (max-width: 1600px) {
+	
+}
+
+
+/* Large Device: 1200px. */
+
+
+@media only screen and (min-width: 1200px) and (max-width: 1400px) {
+	.container.container-profile {
+		padding-left: 7rem;
+	}
+}
+
+@media only screen and (min-width: 991px) and (max-width: 1200px){
+	.main-navigation .navbar .nav-item {
+		margin-right: 100px;
+	}
+	
+	/*	Profile*/
+	
+	.profile-img-btn {
+		margin-top: 4rem;
+	}
+	
+	.profile-right-sidebar {
+		margin-top: 4rem;
+	}
+	
+}
+
+/* Tablet Layout: 768px.*/
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+
+
+	/*	Grid*/
+	
+	.grid-2 {
+		grid-template-columns: 1fr;
+	}
+	
+	.grid-3 {
+		grid-template-columns: repeat(2,1fr);
+	}
+	
+	.grid-4 {
+		grid-template-columns: repeat(2,1fr);
+	}
+	
+	/*	Navigation*/
+	
+	.main-navigation .navbar {
+		background: #FFFFFF;
+		height: auto;
+		line-height: 50px;
+		padding: 2rem 0;
+	}
+	
+	.navbar-toggler:focus {
+		outline: none;
+		box-shadow: none;
+		border: none;
+	}
+	
+	
+	/*	Price*/
+	
+	.price-box1, 
+	.price-box2 {
+		display: none;
+	}
+	
+	/*	Profile*/
+	
+	.profile-img-btn {
+		margin-top: 4rem;
+	}
+	
+	.profile-right-sidebar {
+		margin-top: 4rem;
+	}
+	
+}
+
+/* Mobile Layout: 320px. */
+@media only screen and (max-width: 767px) {
+	
+	/*	Padding*/
+	
+	.de-padding{
+		padding: 5rem 0;
+	}
+
+	.de-pt {
+		padding-top: 5rem;
+	}
+
+	.pt-120 {
+		padding-top: 5rem;
+	}
+
+	.pt-105 {
+		padding-top: 5rem;
+	}
+
+	.pt-210 {
+		padding-top: 13rem;
+	}
+	
+	.de-pb {
+		padding-bottom: 5rem;
+	}
+
+	.pb-120 {
+		padding-bottom: 5rem;
+	}
+
+	.pb-105 {
+		padding-bottom: 5rem;
+	}
+	
+	.pb-80 {
+		padding-botto: 5rem;
+	}
+	
+	
+	/*	grids*/
+	
+	.grid-2 {
+		grid-template-columns: 1fr;
+	}
+	
+	.grid-3 {
+		grid-template-columns: 1fr;
+	}
+	
+	.grid-4 {
+		grid-template-columns: 1fr;
+	}
+    
+	/*	Navigation*/
+	
+	.main-navigation .navbar {
+		background: #FFFFFF;
+		height: auto;
+		line-height: 40px;
+		padding: 2rem 0;
+	}
+	
+	.navbar-toggler:focus {
+		outline: none;
+		box-shadow: none;
+		border: none;
+	}
+	
+	/*	Price*/
+	
+	.price-box1, 
+	.price-box2 {
+		display: none;
+	}
+	
+	/*	Breadcrumb*/
+	
+	.breadcrumb-area .breadcrumb-title .bp {
+		font-size: 22px;
+	}
+	
+	/*	Profile*/
+
+	.container.container-profile {
+		padding-left: 1rem;
+	}
+	
+	.wdt {
+		width: 100%;
+	}
+	
+	.profile-img-btn {
+		flex-direction: column;
+		margin-top: 4rem;
+	}
+	
+	.profile-button {
+		display: flex;
+		align-items: flex-start;
+		gap: 2rem;
+		flex-direction: column;
+	}
+	
+	.profile-right-sidebar {
+		margin-top: 4rem;
+	}
+	
+}
+
+/* Wide Mobile Layout: 480px. */
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+	.main-navigation .navbar.bsnav-sticky .navbar-collapse ul li a {
+		color: #333;
+	}
+}
+
+@media only screen and (max-width: 576px) {
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -11,12 +11,12 @@ from  django.utils.translation import gettext_lazy as _
 from django.views.static import serve
 """ User Panel Views """
 from .views import (
-    HomeView, create_husband
+    HomeView, create_husband, PackageView
 )
 """ Dashboard Views """
 
 from .views import (
-    DashboardView, 
+    DashboardView,
     # Thread Posts List
     ThreadPostListView,
     # Thread Views
@@ -34,6 +34,7 @@ from .views import (
 
 USER_PANEL_URLS = [
     path("", HomeView.as_view(), name="home"),
+    path("packages/", PackageView.as_view(), name="packages"),
     path("thread/<slug>/posts/", ThreadPostListView.as_view(), name="thread_post_list"),
     # -----------------------------*** Thread Detail ***-----------------------------
     # -----------------------------*** User ***-----------------------------

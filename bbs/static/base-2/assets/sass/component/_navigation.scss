@@ -1,0 +1,45 @@
+/*-------------------------------------------------------
+07. Site Menu css
+---------------------------------------------------------*/
+
+.main-navigation {
+	.navbar {
+		padding: 0;
+		background: var(--clr-white);
+		box-shadow: 0px 4px 8px 1px rgba(0, 0, 0, 0.27);
+		height: 90px;
+		line-height: 90px;
+		.nav-item {
+			margin-right: 198px;
+			&:last-child {
+				margin-right: 0;
+			}
+			.nav-link {
+				padding: 0;
+				color: var(--clr-def);
+			}
+		}
+	}
+}
+
+.hm-burger {
+	i {
+		font-size: 2.8rem;
+	}
+}
+
+.navbar-brand {
+    margin-right: 195px;
+    font-size: 1.25rem;
+    background-color: var(--clr-def);
+    display: inline-block;
+    line-height: 1;
+    padding: 9px 1.3rem;
+	font-weight: 600;
+}
+
+.fixed-top {
+	background: #FFFFFF;
+	box-shadow: 0px 4px 8px 1px rgba(0, 0, 0, 0.27);
+	transition: all .6s ease;
+}

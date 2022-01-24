@@ -1,0 +1,29 @@
+
+/*-------------------------------------------------------
+07. Breadcrumb css
+---------------------------------------------------------*/
+
+.breadcrumb-area {
+    height: 40vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+	
+}
+
+.breadcrumb-title {
+	position: relative;
+	z-index: 1;
+	.bp {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		-webkit-transform: translate(-50%,-50%);
+		transform: translate(-50%,-50%);
+		font-weight: 500;
+		font-size: 31.9908px;
+		display: inline-block;
+		color: var(--clr-white);
+	}
+}

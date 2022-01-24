@@ -61,6 +61,14 @@ class HomeView(TemplateView):
         context['post_list'] =post_list
         context['show_baner'] = True
         return context
+
+class PackageView(TemplateView):
+    template_name = "user-panel/pages/packages.html"
+    def get_context_data(self, **kwargs):
+        context = super(PackageView, self).get_context_data(**kwargs)
+        context["page_title"] = "Packages"
+        context['page_title'] ='Packages'
+        return context
     
 class ThreadPostListView(ListView):
     template_name = "user-panel/pages/thread.html"

@@ -74,6 +74,10 @@
             {% endif %}
         </div>
         <div class="row mt-4 px-3">
+            <h6 class="fw-bold">{{ post.title|truncatechars_html:20 }}</h6>
+            {% if post.image %}
+            <img src="{{ post.image.url }}" alt="{{ post.title }}" class="p-4" height="300" width="300">
+            {% endif %}
             <p class="color-7b7b7b">
                 {{ post.description|truncate_fifty_percent_word|safe }}
                 <form method="POST" action="{% url 'post_details' slug=post.slug %}">

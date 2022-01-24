@@ -29,9 +29,13 @@
                 <li class="nav-item w-100 text-center d-flex justify-content-center">
                     <a class="nav-link w-50" href="#">Inquiry</a>
                 </li>
+                
+                {% comment %}
                 <li class="nav-item w-100 text-center d-flex justify-content-center">
                     <a class="nav-link w-25" href="#">Notice</a>
                 </li>
+                {% endcomment %}
+
                 {% if request.user.is_authenticated %}
                 <li class="nav-item w-100 text-center d-flex justify-content-center">
                     <a class="nav-link w-25 cursor-pointer" data-bs-toggle="modal" data-bs-target="#logoutModal">Logout</a>

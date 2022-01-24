@@ -1,0 +1,133 @@
+{% load static %}
+
+{% url 'account_signup' as signup_url %}
+{% url 'account_login' as login_url %}
+{% url 'account_logout' as logout_url %}
+{% url 'account_email' as account_url %}
+{% url 'account_change_password' as change_password_url %}
+
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title> BBS </title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- ========== Start Stylesheet ========== -->
+    <link href="{% static 'base-2/assets/css/bootstrap.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'base-2/assets/css/fontawesome.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'base-2/assets/css/icofont.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'base-2/assets/css/owl.carousel.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'base-2/assets/css/owl.theme.default.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'base-2/assets/style.css' %}" rel="stylesheet">
+    <link href="{% static 'base-2/assets/css/responsive.css' %}" rel="stylesheet" />
+    <!-- ========== End Stylesheet ========== -->
+</head>
+
+<body id="bdy" class="bg">
+
+    <!-- Start PreLoader 
+    ============================================= -->
+    <div class="se-pre-con"></div>
+    <!-- Start PreLoader-->
+
+    <!-- Start Header
+    ============================================= -->
+    <div class="main-navigation">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container container-custom">
+                <a class="navbar-brand" href="{% url 'home' %}">Home</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="hm-burger">
+                        <i class="icofont-navigation-menu"></i>
+                    </span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto">
+                        {% if request.user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">
+                                User Information
+                            </a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ login_url }}">
+                                User Information Registration/Login
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Inquiry</a>
+                        </li>
+                        {% comment %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Notice</a>
+                        </li>
+                        {% endcomment %}
+                        
+                        {% if request.user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link cursor-pointer" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                                Logout
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Start Header-->
+
+    <main class="main">
+
+        <!-- Start Breadcrumb
+    	============================================= -->
+        <div class="breadcrumb-area">
+            <div class="container">
+                <div class="breadcrumb-content">
+                    <div class="breadcrumb-title">
+                        <img src="{% static 'base-2/assets/img/mix/breadcrumb.png' %}" alt="thumb">
+                        <h2 class="bp">
+                            Buy Points
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Start Breadcrumb-->
+
+        {% block content %}{% endblock %}
+
+    </main>
+
+    <div class="clearfix"></div>
+
+    <!-- Start Scroll top
+	============================================= -->
+    <a href="#bdy" id="scrtop" class="smooth-menu">
+        <i class="icofont-long-arrow-up"></i>
+    </a>
+    <!-- End Scroll top-->
+
+    <!-- Modals -->
+    <!-- Logout Modal -->
+    {% include "account/logout-modal-bootstrap5.html" %}
+
+    <!-- jQuery Frameworks
+    ============================================= -->
+    <script src="{% static 'base-2/assets/js/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'base-2/assets/js/popper.min.js' %}"></script>
+    <script src="{% static 'base-2/assets/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'base-2/assets/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'base-2/assets/js/main.js' %}"></script>
+
+</body>
+
+</html>
