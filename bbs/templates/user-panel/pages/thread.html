@@ -14,9 +14,11 @@
                     <img src="/static/user-panel/image/human-1.png" alt="">
                 </div>
                 <div class="col-md-10 my-auto">
-                    <input type="text" name="title" class="form-control form-thread mb-2" placeholder="post title" required>
+                    <input type="text" name="title" class="form-control form-thread mb-2" placeholder="title" required>
+                    <textarea name="summary" class="form-control form-thread my-2" rows="1"
+                        placeholder="summary" required></textarea>
                     <textarea name="description" class="form-control form-thread" rows="3"
-                        placeholder="post description" required></textarea>
+                        placeholder="description" required></textarea>
                     <!-- <input type="textarea" name="post-description" class="form-control form-thread" -->
                         <!-- placeholder="what's happening?"> -->
                 </div>
@@ -54,8 +56,6 @@
 <!-- post list -->
 {% for post in post_list %}
 
-{% if not post.is_premium %}
-
 <div class="card border-top-0 border-rounded shadow-sm mt-4">
     <div class="card-body">
         <div class="row">
@@ -75,11 +75,20 @@
         </div>
         <div class="row mt-4 px-3">
             <h4 class="fw-bold">{{ post.title|truncatechars_html:20 }}</h4>
+            <p class="">
+                <span class="fw-bold">Summary: </span> {{ post.summary }}
+            </p>
             {% if post.image %}
             <img src="{{ post.image.url }}" alt="{{ post.title }}" class="p-4" height="300" width="300">
             {% endif %}
             <p class="color-7b7b7b">
+
                 {{ post.description|truncate_fifty_percent_word|safe }}
+
+                <!-- post_details_free -->
+                <a href="{% url 'post_details_free' slug=post.slug %}" class="text-primary">Read More</a>
+                
+                {% comment %}
                 <form method="POST" action="{% url 'post_details' slug=post.slug %}">
                     {% csrf_token %}
                     <input name='read_more' type="hidden" , value="read_more">
@@ -87,10 +96,11 @@
                         <u class="text-primary">Read more</u>
                     </button>
                 </form>
+                {% endcomment %}
             </p>
         </div>
         <div class="row mt-2 mx-1 comment-row py-2 text-center">
-            <a href="{% url 'post_details' slug=post.slug %}">Show Comments</a>
+            <a href="{% url 'post_details_free' slug=post.slug %}">Show Comments</a>
         </div>
         <form method="POST" action="{% url 'post_details' slug=post.slug %}" enctype="multipart/form-data"
             class="row py-2">
@@ -109,7 +119,7 @@
 </div>
 
 
-{% else %}
+{% comment %}
 
 <div class="card border-top-0 border-rounded shadow-sm mt-4 disable">
     <div class="card-body">
@@ -139,7 +149,7 @@
     </div>
 </div>
 
-{% endif %}
+{% endcomment %}
 
 {% empty %}
 <div class="card border-top-0 border-rounded shadow-sm mt-4">

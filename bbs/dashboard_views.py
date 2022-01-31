@@ -140,8 +140,14 @@ class ThreadUpdateView(UpdateView):
                 form=form, request=self.request
             )
             if result == 1:
+                messages.add_message(
+                    self.request, messages.SUCCESS, "Thread Updated Successfully!"
+                )
                 return super().form_valid(form)
             else:
+                messages.add_message(
+                    self.request, messages.ERROR, "Failed to update!"
+                )
                 return super().form_invalid(form)
 
         messages.add_message(

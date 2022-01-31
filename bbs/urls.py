@@ -51,6 +51,7 @@ USER_PANEL_URLS = [
     # -----------------------------*** Post ***-----------------------------
     #   -----------------------------*** *** ***-----------------------------
     path('create-post/', views.create_post, name='create_post'),
+    path('post/details/<slug>/', views.post_details_free, name='post_details_free'),
     path('post-details/<slug>/', views.post_details, name='post_details'),
     # path('<str:slug>/', views.post_details, name='post_details'),
     path('post-update/<slug>/', views.post_update, name='update_post'),

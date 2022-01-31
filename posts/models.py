@@ -65,6 +65,9 @@ class Post(models.Model):
     weight = models.PositiveIntegerField(
         default=0, blank=True, null=True, verbose_name="post weight"
     )
+    summary = models.TextField(
+        max_length=500
+    )
     description = models.TextField(
         blank=True, null=True
     )

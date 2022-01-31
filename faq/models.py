@@ -12,7 +12,7 @@ class FAQ(models.Model):
     answer = models.TextField(
         blank=True, null=True, verbose_name='question answer'
     )
-    is_active = models.BooleanField(default= False)
+    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name='created at'
     )
