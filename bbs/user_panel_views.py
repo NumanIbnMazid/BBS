@@ -415,7 +415,6 @@ def create_post(request):
 # #-----------------------------***-----------------------------
 
 
-@login_required()
 def post_details_free(request, slug):
     post_qs = Post.objects.filter(slug=slug).order_by('created_at').last()
     form = PostManageForm(instance=post_qs)
