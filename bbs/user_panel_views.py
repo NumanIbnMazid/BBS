@@ -399,6 +399,14 @@ def create_post(request):
     # form = PostManageForm
     if request.method == 'POST':
         user_qs = request.user
+        
+        # validate: One post can be created within 24 hours
+        user_post_qs = Post.objects.filter(user=user_qs).order_by('-created_at').first()
+        if user_post_qs:
+            if user_post_qs.created_at > timezone.now() - timedelta(hours=24):
+                messages.add_message(
+                    request, messages.ERROR, 'You can create one post within 24 hours')
+                return HttpResponseRedirect(reverse('user_posts'))
 
         # get form data
         title = request.POST.get('title')
