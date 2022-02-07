@@ -131,6 +131,7 @@ USE_TZ = True
 
 """ *** Static & Media Files Configurations *** """
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
 
 from django.utils.translation import gettext_lazy as _
 
@@ -143,7 +144,6 @@ LANGUAGES = (
 LOCALE_PATHS =(
     os.path.join(BASE_DIR,'locale/'),
 )
-MEDIA_URL = '/media/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_APP_DIR, 'static'),
