@@ -61,7 +61,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-] + THIRD_PARTY_APPS + LOCAL_APPS
+] + THIRD_PARTY_APPS + LOCAL_APPS + ['django_cleanup.apps.CleanupConfig', ]
 
 """ *** Authentication Definations *** """
 AUTH_USER_MODEL = 'users.User'

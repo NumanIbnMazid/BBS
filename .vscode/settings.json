@@ -1,3 +1,15 @@
 {
-    "python.pythonPath": "/mnt/AC588DBA588D8434/RAPPLES/PROJECTS/BBS/PROJECT/env/bin/python"
+    "python.pythonPath": "/mnt/AC588DBA588D8434/RAPPLES/PROJECTS/BBS/PROJECT/env/bin/python",
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "bbs-db",
+            "database": "bbs",
+            "username": "postgres",
+            "password": "postgres"
+        }
+    ]
 }

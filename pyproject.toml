@@ -79,6 +79,7 @@ typing-extensions = "3.10.0.2"
 urllib3 = "1.26.6"
 "zope.interface" = "5.4.0"
 psycopg2-binary = "^2.9.3"
+django-cleanup = "^6.0.0"
 
 [tool.poetry.dev-dependencies]
 

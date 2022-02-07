@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from bbs.helpers import get_dynamic_fields
 from bbs.utils import autoslugFromUUID
+from users.image_upload_helper import upload_user_image
 
 
 def generate_username_from_email(email):
@@ -64,15 +65,17 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(
         max_length=254, null=True, blank=True
     )
+    image = models.ImageField(upload_to=upload_user_image, null=True, blank=True)
     gender = models.SmallIntegerField(
         choices=Gender.choices, default=1
     )
     contact_number = models.CharField(
         max_length=30, blank=True, null=True
     )
-    dob = models.DateField(
-        blank=True, null=True, verbose_name="date of birth"
-    )
+    # dob = models.DateField(
+    #     blank=True, null=True, verbose_name="date of birth"
+    # )
+    age = models.PositiveIntegerField(blank=True, null=True)
     address = models.CharField(
         max_length=254, blank=True, null=True
     )
@@ -201,8 +204,8 @@ def assign_user_wallet_on_post_save(sender, instance, **kwargs):
 
 @autoslugFromUUID()
 class Husband(models.Model):
-    user = models.ForeignKey(
-        get_user_model(), on_delete=models.CASCADE, related_name="husband_users"
+    user = models.OneToOneField(
+        get_user_model(), on_delete=models.CASCADE, related_name="user_husband"
     )
     slug = models.SlugField(unique=True, max_length=254)
     name = models.CharField(
@@ -214,9 +217,10 @@ class Husband(models.Model):
     address = models.CharField(
         max_length=254, blank=True, null=True
     )
-    dob = models.DateField(
-        blank=True, null=True, verbose_name="Date of Birth"
-    )
+    # dob = models.DateField(
+    #     blank=True, null=True, verbose_name="Date of Birth"
+    # )
+    age = models.PositiveIntegerField(blank=True, null=True)
     characteristics = models.TextField(
         blank=True, null=True
     )

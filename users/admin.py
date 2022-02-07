@@ -6,7 +6,7 @@ from .models import User, UserWallet, Husband,UserCostTransaction
 
 class UserAdmin(BaseUserAdmin):
     fieldsets = (
-        (None, {'fields': ('email', 'username', 'password', 'name', 'gender', 'contact_number', 'dob', 'address', 'membership_type', 'marriage_experience', 'purpose_of_use', 'last_login')}),
+        (None, {'fields': ('email', 'username', 'password', 'name', 'image', 'gender', 'contact_number', 'age', 'address', 'membership_type', 'marriage_experience', 'purpose_of_use', 'last_login')}),
         ('Permissions', {'fields': (
             'is_active',
             'is_staff',
@@ -46,7 +46,7 @@ admin.site.register(UserWallet, UserWalletAdmin)
 
 
 class HusbandAdmin(admin.ModelAdmin):
-    list_display = ["user", "slug", "name", "nationality", "address", "dob", "characteristics", "created_at", "updated_at"]
+    list_display = ["user", "slug", "name", "nationality", "address", "age", "characteristics", "created_at", "updated_at"]
 
     class Meta:
         model = Husband

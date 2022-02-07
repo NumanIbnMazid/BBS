@@ -4,6 +4,23 @@ body{
 nav{
     z-index: 99;
 }
+
+.text-deco-none {
+    text-decoration: none !important;
+}
+
+.color-pink {
+    color: #FE80C4;
+}
+
+.background-color-pink {
+    background-color: #FE80C4;
+}
+
+.no-bullet {
+    list-style: none !important;
+}
+
 .nav-link{
     font-style: normal;
     font-weight: normal;

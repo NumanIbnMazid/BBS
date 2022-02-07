@@ -40,6 +40,8 @@ USER_PANEL_URLS = [
     # -----------------------------*** User ***-----------------------------
     #   -----------------------------*** *** ***-----------------------------
     path('user-profile/', views.user_profile, name="user_profile"),
+    path('user-profile/<slug>/', views.user_profile_details, name="user_profile_detail"),
+    path('user-profile/<slug>/edit/', views.user_profile_edit, name="user_profile_edit"),
     path('user-profile-update/<slug>/', views.user_profile_update, name="user_profile_update"),
 
     # -----------------------------*** Husband ***-----------------------------

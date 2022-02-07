@@ -1,0 +1,119 @@
+{% extends "user-panel/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="pt-5 container">
+    <div class="row" style="--bs-gutter-x: 0px !important; margin-top: 50px;">
+        {% include "user-panel/pages/profile/left.html" %}
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row justify-content-start align-items-center">
+                        <div class="col-md-4">
+                            {% if request.user.image %}
+                            <img src="{{ request.user.image.url }}" alt="" height="150" width="150">
+                            {% else %}
+                            <img src="{% static 'user-panel/image/human-1.png' %}" alt="" height="150" width="150">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                            <a href="{% url 'user_profile_edit' slug=request.user.slug %}" class="btn border bg-muted">
+                                Edit Profile
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- personal Information -->
+                    <div class="mt-4">
+                        <h6 class="text-muted">Personal Infromation</h6>
+                        <hr>
+
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="color-616161">Name</label>
+                                </div>
+                                <div class="col-md-8">
+                                    {{ request.user.name|default:'-' }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="color-616161">Age</label>
+                                </div>
+                                <div class="col-md-8">
+                                    {{ request.user.age|default:'-' }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="color-616161">Living City</label>
+                                </div>
+                                <div class="col-md-8">
+                                    {{ request.user.address|default:'-' }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="color-616161">Marriage Experience</label>
+                                </div>
+                                <div class="col-md-8">
+                                    {{ request.user.marriage_experience|default:'-' }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- husband Information -->
+                    <div class="mt-4">
+                        <h6 class="text-muted">Husband Infromation</h6>
+                        <hr>
+
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="color-616161">Name</label>
+                                </div>
+                                <div class="col-md-8">
+                                    {{ request.user.user_husband.name|default:'-' }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="color-616161">Age</label>
+                                </div>
+                                <div class="col-md-8">
+                                    {{ request.user.user_husband.age|default:'-' }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="color-616161">Living City</label>
+                                </div>
+                                <div class="col-md-8">
+                                    {{ request.user.user_husband.address|default:'-' }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="color-616161">Good or Bad Characteristics</label>
+                                </div>
+                                <div class="col-md-8">
+                                    {{ request.user.user_husband.characteristics|default:'-' }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 thread" style="padding-top: 0px !important;">
+            {% include "user-panel/pages/profile/right.html" %}
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -43,7 +43,7 @@ class UserManageForm(forms.ModelForm):
         })
     class Meta:
         model = User
-        fields = ['name','gender','contact_number','dob',
+        fields = ['name','gender','contact_number','age',
                  'address','marriage_experience','purpose_of_use']
         widgets = {
             'marriage_experience': CKEditorWidget(),

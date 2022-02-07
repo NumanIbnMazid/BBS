@@ -1,0 +1,11 @@
+<div class="row mx-2 ticket py-4 ms-4">
+    <p class="text-center text-white ticket-point m-0">
+        <i class="fas fa-star pe-2"></i>
+        {% if request.user.user_wallet_user is not None %}
+        {{ request.user.user_wallet_user.available_points }}
+        {% else %}
+        0
+        {% endif %}
+    </p>
+    <small class="text-center text-white">Points Available</small>
+</div>

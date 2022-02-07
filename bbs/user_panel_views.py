@@ -18,6 +18,7 @@ from django.views import View
 from datetime import date, datetime, timedelta
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from django.contrib.auth import get_user_model
 
 from django.db.models import Q
 import os
@@ -232,9 +233,71 @@ def user_profile(request):
                'total_post_read': total_post_read}
     return render(request, 'user-panel/backup/profile.html', context)
 
+@login_required()
+def user_profile_details(request, slug):
+    page_title = "User Profile"
+    user = get_user_model().objects.filter(slug__iexact=slug).first()
+    husband_lists = Husband.objects.filter(user=user)
+    post_lists = Post.objects.filter(user=user)
+    total_post_read = Post.objects.filter(allowed_users=user).count()
+    user_wallet = UserWallet.objects.filter(user=user).last()
+    user_wallet_transaction = UserWalletTransaction.objects.filter(
+        user=user).first()
+    context = {'husband_lists': husband_lists,
+               'post_lists': post_lists, 'page_title': page_title,
+               'user_wallet': user_wallet,
+               'user_wallet_transaction': user_wallet_transaction,
+               'total_post_read': total_post_read}
+    return render(request, 'user-panel/pages/user-profile.html', context)
+
 # #-----------------------------***-----------------------------
 # #------------------------ Profile Update-----------------------
 # #-----------------------------***-----------------------------
+
+
+def user_profile_edit(request, slug):
+    if request.method == 'POST':
+        user = get_user_model().objects.filter(slug__iexact=slug).first()
+        
+        # get form data
+        
+        # check if image is valid
+        image = request.FILES.get('image')
+        if image:
+            is_valid_image = check_is_valid_image(image)
+            if is_valid_image[0] == False:
+                messages.add_message(
+                    request, messages.ERROR, is_valid_image[1])
+                return HttpResponseRedirect(reverse("user_profile_detail", kwargs={'slug': slug}))
+            else:
+                user.image = image
+                
+        # get user personal infromation
+        user.name = request.POST.get('name')
+        user.age = int(request.POST.get('age', None)) if request.POST.get('age') else None
+        user.address = request.POST.get('address')
+        user.marriage_experience = request.POST.get('marriage-experience')
+        user.save()
+        
+        # check if user has husband otherwise create new husband
+        husband_qs = Husband.objects.filter(user=user)
+        if husband_qs:
+            husband_qs.update(
+                name=request.POST.get('husband-name'),
+                age=int(request.POST.get('husband-age', None)) if request.POST.get('husband-age') else None,
+                address=request.POST.get('husband-address'),
+                characteristics=request.POST.get('characteristics'),
+            )
+        else:
+            Husband.objects.create(
+                user=user,
+                name=request.POST.get('husband-name'),
+                age=int(request.POST.get('husband-age', None)) if request.POST.get('husband-age') else None,
+                address=request.POST.get('husband-address'),
+                characteristics=request.POST.get('characteristics'),
+            )
+        return HttpResponseRedirect(reverse('user_profile_detail', kwargs={'slug': slug}))
+    return render(request, 'user-panel/pages/user-profile-edit.html')
 
 
 def user_profile_update(request, slug):
