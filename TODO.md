@@ -41,4 +41,5 @@
 * User's Posts List View
 * User's Subscriptions list View
 * Only one post can be created within 24 hours per user
-* 10 point is required to delete a post
+* 10 points is required to delete a post
+* Flat Rate Plan Half-Yearly
