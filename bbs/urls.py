@@ -107,7 +107,7 @@ urlpatterns = [
      url(r'^static/(?P<path>.*)$', serve,
          {'document_root': settings.STATIC_ROOT}),
     # Application URLS
-    path(_('admin/'), admin.site.urls),
+    path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path("select2/", include("django_select2.urls")),
