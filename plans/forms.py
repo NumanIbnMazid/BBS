@@ -46,17 +46,17 @@ class FlatRatePlanManageForm(forms.ModelForm):
         super(FlatRatePlanManageForm, self).__init__(*args, **kwargs)
 
         self.fields['title'].widget.attrs.update({
-            'placeholder': translate_to_jp('Enter Flat Rate Plan Title...'),
+            'placeholder': 'Enter Flat Rate Plan Title...',
             'maxlength': 150
         })
     CURRENCY_CHOICES = (
-        (0, translate_to_jp('Yen')),
-        (1, translate_to_jp('Dollar'))
+        (0, 'Yen'),
+        (1, 'Dollar')
     )
     EXPIRATION_CYCLE_CHOICES = (
-        (0, translate_to_jp('Monthly')),
-        (1, translate_to_jp('Yearly')),
-        (1, translate_to_jp('Lifetime'))
+        (0, 'Monthly'),
+        (1, 'Yearly'),
+        (2, 'Half-Yearly')
     )
     currency = forms.ChoiceField(
        help_text='Select your Currency.', choices=CURRENCY_CHOICES)

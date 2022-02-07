@@ -91,7 +91,7 @@ class FlatRatePlan(models.Model):
     class ExpirationCycle(models.IntegerChoices):
         MONTHLY = 0, _("Monthly")
         YEARLY = 1, _("Yearly")
-        LIFETIME = 2, _("Lifetime")
+        HALF_YEARLY = 2, _("Half-Yearly")
 
     title = models.CharField(
         max_length=254, unique=True
@@ -164,7 +164,7 @@ class FlatRatePlan(models.Model):
         if self.expiration_cycle == 1:
             return "Yearly"
         elif self.expiration_cycle == 2:
-            return "Lifetime"
+            return "Half-Yearly"
         return "Monthly"
 
     def get_is_expired(self):
@@ -182,7 +182,8 @@ class FlatRatePlan(models.Model):
             if timedelta_days <= 365:
                 is_expired = False
         if self.expiration_cycle == 2:
-            is_expired = False
+            if timedelta_days <= 182.5:
+                is_expired = False
         return is_expired
 
 

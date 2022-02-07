@@ -99,6 +99,22 @@ class ThreadPostListView(ListView):
         ) if self.get_thread else None
         context['show_baner'] = False
         return context
+    
+def user_subscriptions(request):
+    user = request.user
+    wallet_transaction_qs = UserWalletTransaction.objects.filter(user=user)
+    context = {
+        "wallet_transactions": wallet_transaction_qs,
+    }
+    return render(request, 'user-panel/pages//subscriptions.html', context)
+    
+def user_posts(request):
+    user = request.user
+    post_qs = Post.objects.filter(user=user)
+    context = {
+        "posts": post_qs,
+    }
+    return render(request, 'user-panel/pages/my-posts.html', context)
 
 # #-----------------------------***-----------------------------
 # #-------------------- User Transaction Type ------------------
@@ -138,7 +154,11 @@ def check_user_transaction_type(request, user_wallet_transaction_qs, user_wallet
                 user_wallet_qs.update(is_in_flat_plan=False,
                                       flat_plan_created_at=None)
         elif expiration_cycle == 2:
-            return True
+            if days.days >= 0 and days.days < 182.6:
+                return True
+            else:
+                user_wallet_qs.update(is_in_flat_plan=False,
+                                      flat_plan_created_at=None)
         else:
             return False
     else:

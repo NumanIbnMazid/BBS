@@ -1,0 +1,111 @@
+{% extends "user-panel/base.html" %}
+
+{% load static %}
+
+{% block additional_styles %}
+<!-- JQuery DataTable CSS -->
+<link rel="stylesheet" type="text/css" href="{% static 'vendors/jquery-datatable/dataTables.bootstrap4.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'vendors/jquery-datatable/buttons.dataTables.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'vendors/jquery-datatable/datatable-custom.css' %}" />
+{% endblock %}
+
+{% block content %}
+
+<div class="pt-5 container">
+    <div class="row" style="--bs-gutter-x: 0px !important; margin-top: 50px;">
+        {% include "user-panel/pages/profile/left.html" %}
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-center">
+                    Subscriptions
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="list-datatable" class="display table align-items-center table-flush table-hover"
+                            style="width:100%">
+                            <thead class="thead-dark">
+                                <tr class="text-center">
+                                    <th>#</th>
+                                    <th>Subscription Type</th>
+                                    <th>Plan</th>
+                                    <th>Created At</th>
+                                </tr>
+                            </thead>
+
+                            <tbody class="list">
+
+                                <!-- table body -->
+                                {% for transaction in wallet_transactions %}
+                                <tr class="text-center">
+
+                                    <td>{{ forloop.counter }}</td>
+
+                                    <td>{{ transaction.get_transaction_type_str }}</td>
+
+                                    <td>
+                                        {% if transaction.transaction_type == 0 %}
+                                        {{ transaction.point_plan.point }}
+
+                                        {% else %}
+                                        
+                                        {{ transaction.flat_rate_plan.get_expiration_cycle_str }}
+                                        {% if transaction.flat_rate_plan.get_is_expired %}
+                                        <span class="text-danger fw-bold ms-2">(Expired)</span>
+                                        {% endif %}
+
+                                        {% endif %}
+                                    </td>
+                                    
+                                    <td>{{ transaction.created_at }}</td>
+
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center">
+                                        <div class="alert alert-warning">
+                                            No data found!
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+
+                            </tbody>
+
+                            <tfoot class="thead-dark">
+                                <tr class="text-center">
+                                    <th>#</th>
+                                    <th>Subscription Type</th>
+                                    <th>Plan</th>
+                                    <th>Created At</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 thread" style="padding-top: 0px !important;">
+            {% include "user-panel/pages/profile/right.html" %}
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block additional_scripts %}
+<script>
+    $(document).ready(function () {
+        $('#list-datatable').DataTable({
+            "pagingType": "full_numbers",
+            "dom": 'Bfrtip',
+            "stateSave": true,
+            "scrollCollapse": true,
+        });
+    });
+</script>
+
+<!-- JQuery DataTable JS -->
+<script src="{% static 'vendors/jquery-datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'vendors/jquery-datatable/dataTables.bootstrap4.min.js' %}"></script>
+{% endblock %}

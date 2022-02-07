@@ -1,6 +1,6 @@
 {% extends "user-panel/base-second.html" %}
 
-{% load custom_tags %}
+{% load static custom_tags %}
 
 {% block content_second %}
 
@@ -11,7 +11,11 @@
             <input type="hidden" name="thread-slug" value="{{ active_thread.slug }}">
             <div class="row">
                 <div class="col-md-2 text-center">
-                    <img src="/static/user-panel/image/human-1.png" alt="">
+                    {% if request.user.image %}
+                    <img src="{{ request.user.image.url }}" alt="" height="60" width="60">
+                    {% else %}
+                    <img src="{% static 'user-panel/image/human-1.png' %}" alt="" height="60" width="60">
+                    {% endif %}
                 </div>
                 <div class="col-md-10 my-auto">
                     <input type="text" name="title" class="form-control form-thread mb-2" placeholder="title" required>
@@ -60,7 +64,11 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md-2 text-center">
-                <img src="/static/user-panel/image/human-2.png" alt="">
+                {% if post.user.image %}
+                <img src="{{ post.user.image.url }}" alt="" height="60" width="60">
+                {% else %}
+                <img src="{% static 'user-panel/image/human-1.png' %}" alt="" height="60" width="60">
+                {% endif %}
             </div>
             <div class="col-md-8 my-auto">
                 <h4 class="color-fe80c4 mb-0">{{ post.user.get_dynamic_username|truncatechars:17 }}</h4>
@@ -105,7 +113,11 @@
         <form method="POST" action="{% url 'post_details' slug=post.slug %}" enctype="multipart/form-data"
             class="row py-2">
             <div class="col-md-2 text-center">
-                <img src="/static/user-panel/image/human-1.png" alt="">
+                {% if request.user.image %}
+                <img src="{{ request.user.image.url }}" alt="" height="40" width="40">
+                {% else %}
+                <img src="{% static 'user-panel/image/human-1.png' %}" alt="" height="40" width="40">
+                {% endif %}
             </div>
             {% csrf_token %}
             <div class="col-md-7 my-auto">

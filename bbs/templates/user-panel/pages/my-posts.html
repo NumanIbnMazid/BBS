@@ -1,0 +1,68 @@
+{% extends "user-panel/base.html" %}
+
+{% load static custom_tags %}
+
+{% block content %}
+
+<div class="pt-5 container">
+    <div class="row" style="--bs-gutter-x: 0px !important; margin-top: 50px;">
+        {% include "user-panel/pages/profile/left.html" %}
+
+        <div class="col-md-6">
+            <!-- post list -->
+            {% for post in posts %}
+
+            <div class="card border-top-0 border-rounded shadow-sm mt-4">
+                <div class="card-body">
+                    <div class="row mt-4 px-3">
+                        <h4 class="fw-bold">
+                            {{ post.title|truncatechars_html:20 }}
+                            {% if post.is_premium %}
+                            <span class="ms-4 text-warning fs-3">
+                                <span class="fs-5">{{ post.get_point_required }}</span>
+                                <i class="fas fa-star"></i>
+                            </span>
+                            {% endif %}
+                        </h4>
+                        <p class="">
+                            <span class="fw-bold">Summary: </span> {{ post.summary }}
+                        </p>
+                        {% if post.image %}
+                        <img src="{{ post.image.url }}" alt="{{ post.title }}" class="p-4" height="300" width="300">
+                        {% endif %}
+                        <p class="color-7b7b7b">
+
+                            {{ post.description|truncate_fifty_percent_word|safe }}
+
+                            <!-- post_details_free -->
+                            <a href="{% url 'post_details_free' slug=post.slug %}" class="text-primary">Read More</a>
+                        </p>
+                    </div>
+                    <div class="row mt-2 mx-1 comment-row py-2 text-center">
+                        <a href="{% url 'post_details_free' slug=post.slug %}">Show Comments</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="my-4">
+                <span class="text-muted p-2 mt-4">{{ post.created_at }}</span>
+            </div>
+
+            {% empty %}
+            <div class="card border-top-0 border-rounded shadow-sm mt-4">
+                <div class="card-body">
+                    <div class="alert alert-info text-center" role="alert">
+                        No posts available!
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-md-3 thread" style="padding-top: 0px !important;">
+            {% include "user-panel/pages/profile/right.html" %}
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

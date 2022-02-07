@@ -43,6 +43,8 @@ USER_PANEL_URLS = [
     path('user-profile/<slug>/', views.user_profile_details, name="user_profile_detail"),
     path('user-profile/<slug>/edit/', views.user_profile_edit, name="user_profile_edit"),
     path('user-profile-update/<slug>/', views.user_profile_update, name="user_profile_update"),
+    path('subscriptions/', views.user_subscriptions, name="user_subscriptions"),
+    path('my-posts/', views.user_posts, name="user_posts"),
 
     # -----------------------------*** Husband ***-----------------------------
     #   -----------------------------*** *** ***-----------------------------

@@ -88,7 +88,7 @@
               <i class="fas fa-home"></i> Home
             </a>
             {% if request.user.is_staff %}
-            <a href="{% url 'dashboard:dashboard' %}" class="text-xl text-theme hover:text-app-color-400 pl-3">
+            <a href="{% url 'dashboard' %}" class="text-xl text-theme hover:text-app-color-400 pl-3">
               <i class="fas fa-tachometer-alt"></i> Dashboard
             </a>
             {% endif %}
