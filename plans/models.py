@@ -322,7 +322,7 @@ def update_user_wallet_on_pre_delete(sender, instance, **kwargs):
                 # check if transaction type is point plan
                 if transactionType == 0:
                     # calculate point
-                    calculated_points = user_wallet.available_points - instance.point_plan.point
+                    calculated_points = max(user_wallet.available_points - instance.point_plan.point, 0)
                     # update user wallet
                     user_wallet_qs.update(
                         available_points=calculated_points

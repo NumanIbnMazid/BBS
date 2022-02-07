@@ -30,3 +30,15 @@
 * Dynamic FAQ Page in User Panel
 * Admin can mark point/flat rate plan buy request as done or can delete/reject request from admin dashboard
 * Non-members and members can view other member's profile
+
+# Completed Tasks
+
+* Non-user can only see every post & comment
+* User Profile Details
+* User Profile Edit
+* User Password Change
+* User Account Email Change
+* User's Posts List View
+* User's Subscriptions list View
+* Only one post can be created within 24 hours per user
+* 10 point is required to delete a post

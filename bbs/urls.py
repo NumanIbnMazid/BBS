@@ -45,6 +45,7 @@ USER_PANEL_URLS = [
     path('user-profile-update/<slug>/', views.user_profile_update, name="user_profile_update"),
     path('subscriptions/', views.user_subscriptions, name="user_subscriptions"),
     path('my-posts/', views.user_posts, name="user_posts"),
+    path('delete-my-posts/', views.delete_user_post, name="delete_user_post"),
 
     # -----------------------------*** Husband ***-----------------------------
     #   -----------------------------*** *** ***-----------------------------

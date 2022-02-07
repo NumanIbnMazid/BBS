@@ -26,6 +26,10 @@ from django.conf import settings
 from django.core.files.uploadedfile import UploadedFile
 from django.db.models.fields.files import ImageFieldFile
 from django.template.defaultfilters import filesizeformat
+from django.views.decorators.csrf import csrf_exempt
+from bbs.helpers import (
+    validate_normal_form, get_simple_context_data, get_simple_object, delete_simple_object, user_has_permission
+)
 
 # helper functions
 
@@ -115,6 +119,67 @@ def user_posts(request):
         "posts": post_qs,
     }
     return render(request, 'user-panel/pages/my-posts.html', context)
+
+
+@csrf_exempt
+@login_required
+def delete_user_post(request):
+    
+    thread_weight = 10  # required 10 point
+    
+    dynamic_identifier = request.POST.get("dynamic_identifier")
+    
+    post_qs = Post.objects.filter(slug__iexact=dynamic_identifier)
+    if not post_qs.exists():
+        return HttpResponseNotFound("Post not found")
+    
+    if thread_weight > 0:
+        has_valid_flat_rate_transaction = False
+        has_available_points = False
+
+        # *** Is In Flat Rate Checking ***
+        flat_rate_plan_qs = UserWalletTransaction.objects.filter(
+            user=request.user, transaction_type=1).order_by('created_at')
+        if flat_rate_plan_qs.exists():
+            for user_wallet_transaction in flat_rate_plan_qs:
+                if not user_wallet_transaction.flat_rate_plan.get_is_expired():
+                    has_valid_flat_rate_transaction = True
+                    break
+
+        if not has_valid_flat_rate_transaction:
+            # update user wallet and set to None
+            user_wallet_qs = UserWallet.objects.filter(
+                user=request.user)
+            if user_wallet_qs.exists():
+                user_wallet_qs.update(
+                    is_in_flat_plan=False, flat_plan_created_at=None)
+
+            # *** If Available Points Checking ***
+            available_points = user_wallet_qs.first().available_points
+
+            # check if available point is greater than or equal thread_weight
+            if available_points >= thread_weight:
+                # update user wallet and deduct points
+                user_wallet_qs.update(available_points=(
+                    available_points - thread_weight))
+                # delete post
+                return delete_simple_object(request=request, key='slug', model=Post, redirect_url="user_posts")
+            else:
+                has_available_points = False
+
+        # if has valid flat rate transaction
+        else:
+            return delete_simple_object(request=request, key='slug', model=Post, redirect_url="user_posts")
+
+        if not has_valid_flat_rate_transaction and not has_available_points:
+            messages.error(request, f'Please purchase points or flat rate plan to delete this post '
+                                    f'This post requires 10 points to delete.')
+            return HttpResponseRedirect(reverse("user_posts"))
+
+    # if there is no weight of thread
+    else:
+        return delete_simple_object(request=request, key='slug', model=Post, redirect_url="user_posts")
+    return HttpResponseRedirect(reverse("user_posts"))
 
 # #-----------------------------***-----------------------------
 # #-------------------- User Transaction Type ------------------
@@ -477,7 +542,7 @@ def create_post(request):
                     post_qs = Post.objects.create(user=user_qs, title=title, thread=thread_obj, summary=summary,
                                                   description=description, image=image)
                     post_qs.allowed_users.add(request.user)
-                    messages.success(request, 'Successfully Post Added')
+                    messages.success(request, 'Post created successfully!')
                     return HttpResponseRedirect(reverse('user_profile'))
 
                 if not has_valid_flat_rate_transaction and not has_available_points:
@@ -490,7 +555,7 @@ def create_post(request):
                 post_qs = Post.objects.create(user=user_qs, title=title, thread=thread_obj, summary=summary,
                                               description=description, image=image)
                 post_qs.allowed_users.add(request.user)
-                messages.success(request, 'Successfully Post Added')
+                messages.success(request, 'Post created successfully!')
                 return HttpResponseRedirect(reverse("thread_post_list", kwargs={'slug': thread_slug}))
         else:
             messages.error(request, 'Thread not found!')

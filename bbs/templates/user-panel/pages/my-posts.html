@@ -12,35 +12,48 @@
             <!-- post list -->
             {% for post in posts %}
 
-            <div class="card border-top-0 border-rounded shadow-sm mt-4">
-                <div class="card-body">
-                    <div class="row mt-4 px-3">
-                        <h4 class="fw-bold">
-                            {{ post.title|truncatechars_html:20 }}
-                            {% if post.is_premium %}
-                            <span class="ms-4 text-warning fs-3">
-                                <span class="fs-5">{{ post.get_point_required }}</span>
-                                <i class="fas fa-star"></i>
-                            </span>
-                            {% endif %}
-                        </h4>
-                        <p class="">
-                            <span class="fw-bold">Summary: </span> {{ post.summary }}
-                        </p>
-                        {% if post.image %}
-                        <img src="{{ post.image.url }}" alt="{{ post.title }}" class="p-4" height="300" width="300">
-                        {% endif %}
-                        <p class="color-7b7b7b">
+            <div class="row justify-content-center align-items-center">
+                <div class="col-md-11">
+                    <div class="card border-top-0 border-rounded shadow-sm mt-4">
+                        <div class="card-body">
+                            <div class="row mt-4 px-3">
+                                <h4 class="fw-bold">
+                                    {{ post.title|truncatechars_html:20 }}
+                                    {% if post.is_premium %}
+                                    <span class="ms-4 text-warning fs-3">
+                                        <span class="fs-5">{{ post.get_point_required }}</span>
+                                        <i class="fas fa-star"></i>
+                                    </span>
+                                    {% endif %}
+                                </h4>
+                                <p class="">
+                                    <span class="fw-bold">Summary: </span> {{ post.summary }}
+                                </p>
+                                {% if post.image %}
+                                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="p-4" height="300"
+                                    width="300">
+                                {% endif %}
+                                <p class="color-7b7b7b">
 
-                            {{ post.description|truncate_fifty_percent_word|safe }}
+                                    {{ post.description|truncate_fifty_percent_word|safe }}
 
-                            <!-- post_details_free -->
-                            <a href="{% url 'post_details_free' slug=post.slug %}" class="text-primary">Read More</a>
-                        </p>
+                                    <!-- post_details_free -->
+                                    <a href="{% url 'post_details_free' slug=post.slug %}" class="text-primary">Read
+                                        More</a>
+                                </p>
+                            </div>
+                            <div class="row mt-2 mx-1 comment-row py-2 text-center">
+                                <a href="{% url 'post_details_free' slug=post.slug %}">Show Comments</a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="row mt-2 mx-1 comment-row py-2 text-center">
-                        <a href="{% url 'post_details_free' slug=post.slug %}">Show Comments</a>
-                    </div>
+                </div>
+                <div class="col-md-1">
+                    <button type="button"
+                        class="btn btn-danger btn-sm text-deco-none bg-c-danger js_delete_post"
+                        value="{{post.slug}}" data-bs-toggle="modal" data-bs-target="#modal-delete-post">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
                 </div>
             </div>
 
@@ -58,11 +71,66 @@
             </div>
             {% endfor %}
         </div>
-        <div class="col-md-3 thread" style="padding-top: 0px !important;">
+        <div class="col-md-3 ps-4 thread" style="padding-top: 0px !important;">
             {% include "user-panel/pages/profile/right.html" %}
         </div>
 
     </div>
 </div>
+
+
+<!-- Dynamic Item Delete Modal -->
+<div class="modal fade bg-opacity-mid" id="modal-delete-post" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bg-c-white-raw">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold text-dark">Please Confirm</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{% url 'delete_user_post' %}" id="postDeleteForm">
+                    {% csrf_token %}
+                    <input type="hidden" id="post_keeper" name="dynamic_identifier" value="0">
+                    <div class="text-center">
+                        <p class="c-text-danger font-bold font-15">
+                            <h4>
+                                <b>10 Point is required to delete this post.</b>
+                            </h4>
+                            Are you sure you are going to delete this post???
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-danger">
+                            Yes, Delete
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block additional_scripts %}
+
+<script>
+    // delete dynamic item
+    $(".js_delete_post").click(function () {
+        let dynamic_identifier_value = this.value;
+        $('#post_keeper').val(dynamic_identifier_value);
+        // console.log(dynamic_identifier_value);
+    });
+    document.querySelector('#postDeleteForm').addEventListener('submit', function (e) {
+        let form = this;
+        e.preventDefault();
+        form.submit();
+    });
+</script>
 
 {% endblock %}

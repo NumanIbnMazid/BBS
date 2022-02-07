@@ -80,6 +80,7 @@ class FlatRatePlanManageForm(forms.ModelForm):
 class UserWidget(s2forms.ModelSelect2Widget):
     search_fields = [
         "username__icontains",
+        "name__icontains",
         "email__icontains",
         "contact_number__icontains",
     ]
