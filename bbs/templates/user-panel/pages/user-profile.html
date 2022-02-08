@@ -6,23 +6,30 @@
 
 <div class="pt-5 container">
     <div class="row" style="--bs-gutter-x: 0px !important; margin-top: 50px;">
-        {% include "user-panel/pages/profile/left.html" %}
+        <div class="col-md-3">
+            {% if request.user.slug == profile.slug %}
+            {% include "user-panel/pages/profile/left.html" %}
+            {% endif %}
+        </div>
+        
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
                     <div class="row justify-content-start align-items-center">
                         <div class="col-md-4">
-                            {% if request.user.image %}
-                            <img src="{{ request.user.image.url }}" alt="" height="150" width="150">
+                            {% if profile.image %}
+                            <img src="{{ profile.image.url }}" alt="" height="150" width="150">
                             {% else %}
                             <img src="{% static 'user-panel/image/human-1.png' %}" alt="" height="150" width="150">
                             {% endif %}
                         </div>
+                        {% if request.user.slug == profile.slug %}
                         <div class="col-md-4">
-                            <a href="{% url 'user_profile_edit' slug=request.user.slug %}" class="btn border bg-muted">
+                            <a href="{% url 'user_profile_edit' slug=profile.slug %}" class="btn border bg-muted">
                                 Edit Profile
                             </a>
                         </div>
+                        {% endif %}
                     </div>
 
                     <!-- personal Information -->
@@ -36,7 +43,7 @@
                                     <label class="color-616161">Name</label>
                                 </div>
                                 <div class="col-md-8">
-                                    {{ request.user.name|default:'-' }}
+                                    {{ profile.name|default:'-' }}
                                 </div>
                             </div>
                             <div class="row">
@@ -44,7 +51,7 @@
                                     <label class="color-616161">Age</label>
                                 </div>
                                 <div class="col-md-8">
-                                    {{ request.user.age|default:'-' }}
+                                    {{ profile.age|default:'-' }}
                                 </div>
                             </div>
                             <div class="row">
@@ -52,7 +59,7 @@
                                     <label class="color-616161">Living City</label>
                                 </div>
                                 <div class="col-md-8">
-                                    {{ request.user.address|default:'-' }}
+                                    {{ profile.address|default:'-' }}
                                 </div>
                             </div>
                             <div class="row">
@@ -60,7 +67,7 @@
                                     <label class="color-616161">Marriage Experience</label>
                                 </div>
                                 <div class="col-md-8">
-                                    {{ request.user.marriage_experience|default:'-' }}
+                                    {{ profile.marriage_experience|default:'-' }}
                                 </div>
                             </div>
                         </div>
@@ -77,7 +84,7 @@
                                     <label class="color-616161">Name</label>
                                 </div>
                                 <div class="col-md-8">
-                                    {{ request.user.user_husband.name|default:'-' }}
+                                    {{ profile.user_husband.name|default:'-' }}
                                 </div>
                             </div>
                             <div class="row">
@@ -85,7 +92,7 @@
                                     <label class="color-616161">Age</label>
                                 </div>
                                 <div class="col-md-8">
-                                    {{ request.user.user_husband.age|default:'-' }}
+                                    {{ profile.user_husband.age|default:'-' }}
                                 </div>
                             </div>
                             <div class="row">
@@ -93,7 +100,7 @@
                                     <label class="color-616161">Living City</label>
                                 </div>
                                 <div class="col-md-8">
-                                    {{ request.user.user_husband.address|default:'-' }}
+                                    {{ profile.user_husband.address|default:'-' }}
                                 </div>
                             </div>
                             <div class="row">
@@ -101,7 +108,7 @@
                                     <label class="color-616161">Good or Bad Characteristics</label>
                                 </div>
                                 <div class="col-md-8">
-                                    {{ request.user.user_husband.characteristics|default:'-' }}
+                                    {{ profile.user_husband.characteristics|default:'-' }}
                                 </div>
                             </div>
                         </div>
@@ -110,7 +117,9 @@
             </div>
         </div>
         <div class="col-md-3 thread" style="padding-top: 0px !important;">
+            {% if request.user.slug == profile.slug %}
             {% include "user-panel/pages/profile/right.html" %}
+            {% endif %}
         </div>
 
     </div>

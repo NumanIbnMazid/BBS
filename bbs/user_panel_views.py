@@ -116,6 +116,7 @@ def user_posts(request):
     user = request.user
     post_qs = Post.objects.filter(user=user)
     context = {
+        "profile": user,
         "posts": post_qs,
     }
     return render(request, 'user-panel/pages/my-posts.html', context)
@@ -328,11 +329,14 @@ def user_profile_details(request, slug):
     user_wallet = UserWallet.objects.filter(user=user).last()
     user_wallet_transaction = UserWalletTransaction.objects.filter(
         user=user).first()
-    context = {'husband_lists': husband_lists,
-               'post_lists': post_lists, 'page_title': page_title,
-               'user_wallet': user_wallet,
-               'user_wallet_transaction': user_wallet_transaction,
-               'total_post_read': total_post_read}
+    context = {
+        'profile': user,
+        'husband_lists': husband_lists,
+        'post_lists': post_lists, 'page_title': page_title,
+        'user_wallet': user_wallet,
+        'user_wallet_transaction': user_wallet_transaction,
+        'total_post_read': total_post_read
+    }
     return render(request, 'user-panel/pages/user-profile.html', context)
 
 # #-----------------------------***-----------------------------

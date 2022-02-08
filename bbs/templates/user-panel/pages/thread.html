@@ -65,13 +65,19 @@
         <div class="row">
             <div class="col-md-2 text-center">
                 {% if post.user.image %}
-                <img src="{{ post.user.image.url }}" alt="" height="60" width="60">
+                <a href="{% url 'user_profile_detail' slug=post.user.slug %}">
+                    <img src="{{ post.user.image.url }}" alt="" height="60" width="60">
+                </a>
                 {% else %}
-                <img src="{% static 'user-panel/image/human-1.png' %}" alt="" height="60" width="60">
+                <a href="{% url 'user_profile_detail' slug=post.user.slug %}">
+                    <img src="{% static 'user-panel/image/human-1.png' %}" alt="" height="60" width="60">
+                </a>
                 {% endif %}
             </div>
             <div class="col-md-8 my-auto">
-                <h4 class="color-fe80c4 mb-0">{{ post.user.get_dynamic_username|truncatechars:17 }}</h4>
+                <a href="{% url 'user_profile_detail' slug=post.user.slug %}" class="text-deco-none">
+                    <h4 class="color-fe80c4 mb-0">{{ post.user.get_dynamic_username|truncatechars:17 }}</h4>
+                </a>
                 <small class="color-959eae">{{ post.created_at }}</small>
             </div>
             {% if post.is_premium %}

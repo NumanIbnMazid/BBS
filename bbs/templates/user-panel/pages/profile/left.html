@@ -1,36 +1,34 @@
-<div class="col-md-3">
-    <ul class="color-pink no-bullet">
-        <li>
-            <a href="{% url 'user_profile_edit' slug=request.user.slug %}" class="text-deco-none color-pink">
-                Edit Profile
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'user_posts' %}" class="text-deco-none color-pink">
-                My Posts
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'account_change_password' %}" class="text-deco-none color-pink">
-                Password
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'account_email' %}" class="text-deco-none color-pink">
-                Email
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'user_subscriptions' %}" class="text-deco-none color-pink">
-                Subscriptions
-            </a>
-        </li>
-        {% if request.user.is_authenticated %}
-        <li>
-            <a class="text-deco-none color-pink cursor-pointer" data-bs-toggle="modal" data-bs-target="#logoutModal">
-                Logout
-            </a>
-        </li>
-        {% endif %}
-    </ul>
-</div>
+<ul class="color-pink no-bullet">
+    <li>
+        <a href="{% url 'user_profile_edit' slug=request.user.slug %}" class="text-deco-none color-pink">
+            Edit Profile
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'user_posts' %}" class="text-deco-none color-pink">
+            My Posts
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'account_change_password' %}" class="text-deco-none color-pink">
+            Password
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'account_email' %}" class="text-deco-none color-pink">
+            Email
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'user_subscriptions' %}" class="text-deco-none color-pink">
+            Subscriptions
+        </a>
+    </li>
+    {% if request.user.is_authenticated %}
+    <li>
+        <a class="text-deco-none color-pink cursor-pointer" data-bs-toggle="modal" data-bs-target="#logoutModal">
+            Logout
+        </a>
+    </li>
+    {% endif %}
+</ul>

@@ -12,13 +12,19 @@
         <div class="row">
             <div class="col-md-2 text-center">
                 {% if post.user.image %}
-                <img src="{{ post.user.image.url }}" alt="" height="60" width="60">
+                <a href="{% url 'user_profile_detail' slug=post.user.slug %}" class="text-deco-none">
+                    <img src="{{ post.user.image.url }}" alt="" height="60" width="60">
+                </a>
                 {% else %}
-                <img src="{% static 'user-panel/image/human-1.png' %}" alt="" height="60" width="60">
+                <a href="{% url 'user_profile_detail' slug=post.user.slug %}" class="text-deco-none">
+                    <img src="{% static 'user-panel/image/human-1.png' %}" alt="" height="60" width="60">
+                </a>
                 {% endif %}
             </div>
             <div class="col-md-8 my-auto">
-                <h4 class="color-fe80c4 mb-0">{{ post.user.get_dynamic_username|truncatechars:17 }}</h4>
+                <a href="{% url 'user_profile_detail' slug=post.user.slug %}" class="text-deco-none">
+                    <h4 class="color-fe80c4 mb-0">{{ post.user.get_dynamic_username|truncatechars:17 }}</h4>
+                </a>
                 <small class="color-959eae">{{ post.created_at }}</small>
             </div>
             {% if post.is_premium %}
@@ -64,13 +70,21 @@
                 <div class="row">
                     <div class="col-1">
                         {% if comment.commented_by.image %}
-                        <img src="{{ comment.commented_by.image.url }}" alt="" height="40" width="40" class="media-object">
+                        <a href="{% url 'user_profile_detail' slug=comment.commented_by.slug %}" class="text-deco-none">
+                            <img src="{{ comment.commented_by.image.url }}" alt="" height="40" width="40"
+                                class="media-object">
+                        </a>
                         {% else %}
-                        <img src="{% static 'user-panel/image/human-1.png' %}" alt="" height="40" width="40" class="media-object">
+                        <a href="{% url 'user_profile_detail' slug=comment.commented_by.slug %}" class="text-deco-none">
+                            <img src="{% static 'user-panel/image/human-1.png' %}" alt="" height="40" width="40"
+                                class="media-object">
+                        </a>
                         {% endif %}
                     </div>
                     <div class="col-11">
-                        <h6 class="fw-bold">{{ comment.commented_by.get_dynamic_username|truncatechars:17 }}</h6>
+                        <a href="{% url 'user_profile_detail' slug=comment.commented_by.slug %}" class="text-deco-none">
+                            <h6 class="fw-bold">{{ comment.commented_by.get_dynamic_username|truncatechars:17 }}</h6>
+                        </a>
                         <p class="komen">
                             {{ comment.comment }}
                             <br>
@@ -109,14 +123,24 @@
                     <div class="row">
                         <div class="col-1">
                             {% if reply.replied_by.image %}
-                            <img src="{{ reply.replied_by.image.url }}" alt="" height="40" width="40" class="media-object">
+                            <a href="{% url 'user_profile_detail' slug=reply.replied_by.slug %}"
+                                class="text-deco-none">
+                                <img src="{{ reply.replied_by.image.url }}" alt="" height="40" width="40"
+                                    class="media-object">
+                            </a>
                             {% else %}
-                            <img src="{% static 'user-panel/image/human-1.png' %}" alt="" height="40" width="40"
-                                class="media-object">
+                            <a href="{% url 'user_profile_detail' slug=reply.replied_by.slug %}" class="text-deco-none">
+                                <img src="{% static 'user-panel/image/human-1.png' %}" alt="" height="40" width="40"
+                                    class="media-object">
+                            </a>
                             {% endif %}
                         </div>
                         <div class="col-11">
-                            <h6 class="fw-bold">{{ reply.replied_by.get_dynamic_username|truncatechars:17 }}</h6>
+                            <a href="{% url 'user_profile_detail' slug=reply.replied_by.slug %}" class="text-deco-none">
+                                <h6 class="fw-bold">
+                                    {{ reply.replied_by.get_dynamic_username|truncatechars:17 }}
+                                </h6>
+                            </a>
                             <p class="komen">
                                 {{ reply.reply }}
                                 <br>
