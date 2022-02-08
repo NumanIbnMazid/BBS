@@ -191,11 +191,16 @@ class UserWallet(models.Model):
 def assign_user_wallet_on_post_save(sender, instance, **kwargs):
     """ Assigns Wallet to User on User post_save hook """
     try:
-        # check if created (Otherwise it will be called twice on created and saved hook)
+        # NOTE: check if created (Otherwise it will be called twice on created and saved hook)
         if kwargs['created']:
-            UserWallet.objects.create(
+            user_wallet = UserWallet.objects.create(
                 user=instance
             )
+            # assign 200 points to user on signup
+            user_wallet.available_points = 200
+            # save user wallet
+            user_wallet.save()
+            
     except Exception as E:
         raise Exception(
             f"Failed to create user wallet! Exception: {str(E)}"

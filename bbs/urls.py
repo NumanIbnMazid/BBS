@@ -9,6 +9,10 @@ from . import views
 from django.conf.urls.i18n import i18n_patterns
 from  django.utils.translation import gettext_lazy as _
 from django.views.static import serve
+
+# custom signup view
+from bbs.custom_signup_view import account_signup_view
+
 """ User Panel Views """
 from .views import (
     HomeView, create_husband, PackageView
@@ -113,6 +117,8 @@ urlpatterns = [
          {'document_root': settings.STATIC_ROOT}),
     # Application URLS
     path('admin/', admin.site.urls),
+    # NOTE: overriding Django-Alluath Signup (Must be placed before django allauth urls)
+    path("accounts/signup/", account_signup_view, name="account_signup"),
     path('accounts/', include('allauth.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path("select2/", include("django_select2.urls")),
