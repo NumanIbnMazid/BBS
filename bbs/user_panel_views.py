@@ -319,7 +319,6 @@ def user_profile(request):
                'total_post_read': total_post_read}
     return render(request, 'user-panel/backup/profile.html', context)
 
-@login_required()
 def user_profile_details(request, slug):
     page_title = "User Profile"
     user = get_user_model().objects.filter(slug__iexact=slug).first()
